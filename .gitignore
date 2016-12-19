@@ -1,0 +1,3 @@
+target
+deploy/postgresql-*.jar
+deploy/wildfly-*.zip
