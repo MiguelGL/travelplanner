@@ -5,6 +5,7 @@ import com.mgl.demo.travelplanner.entity.support.BaseEntity;
 import static org.hibernate.id.enhanced.SequenceStyleGenerator.INCREMENT_PARAM;
 import static org.hibernate.id.enhanced.SequenceStyleGenerator.SEQUENCE_PARAM;
 
+import java.util.Objects;
 import java.util.Set;
 
 import javax.persistence.CascadeType;
@@ -86,13 +87,13 @@ public class User extends BaseEntity<Long> {
     private Set<Trip> trips;
 
     public User(String email, String firstName, String lastName) {
-        this.email = email;
-        this.firstName = firstName;
-        this.lastName = lastName;
+        this.email = Objects.requireNonNull(email, "email");
+        this.firstName = Objects.requireNonNull(firstName, "firstName");
+        this.lastName = Objects.requireNonNull(lastName, "lastName");
     }
 
     public User(String email, String firstName) {
-        this(email, firstName, "");
+        this(email, firstName, NO_LAST_NAME);
     }
 
     public String getFullName() {
