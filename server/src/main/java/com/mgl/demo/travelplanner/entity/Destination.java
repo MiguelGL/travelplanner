@@ -54,10 +54,10 @@ public class Destination extends BaseEntity<Long> {
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "destination_id_gen")
     @GenericGenerator(name = "destination_id_gen", strategy = ENHANCED_SEQ,
             parameters = {
-                @Parameter(name = SEQUENCE_PARAM, value = "destination_id_seq"),
+                @Parameter(name = SEQUENCE_PARAM, value = "tp_destination_id_seq"),
                 @Parameter(name = INCREMENT_PARAM, value = ENHANCED_SEQ_INCREMENT),
             })
-    @ColumnDefault("nextval('destination_id_seq')")
+    @ColumnDefault("nextval('tp_destination_id_seq')")
     private Long id;
 
     @NotNull

@@ -11,11 +11,13 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.Index;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.PrePersist;
 import javax.persistence.PreUpdate;
 import javax.persistence.Table;
+import javax.persistence.UniqueConstraint;
 import javax.validation.ValidationException;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
@@ -34,12 +36,12 @@ import org.hibernate.annotations.Parameter;
 @Entity
 @Table(
         indexes = {
-            // start
-            // end
+            @Index(name = "trip__start_date_idx", columnList = "startDate"),
+            @Index(name = "trip__end_date_idx", columnList = "endDate")
         },
         uniqueConstraints = {
-            // user, start
-            // user, end
+            @UniqueConstraint(name = "trip__user__start_date_uidx", columnNames = {"user_id", "startDate"}),
+            @UniqueConstraint(name = "trip__user__end_date_uidx", columnNames = {"user_id", "endDate"}),
         }
 )
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
@@ -61,10 +63,10 @@ public class Trip extends BaseEntity<Long> {
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "trip_id_gen")
     @GenericGenerator(name = "trip_id_gen", strategy = ENHANCED_SEQ,
             parameters = {
-                @Parameter(name = SEQUENCE_PARAM, value = "trip_id_seq"),
+                @Parameter(name = SEQUENCE_PARAM, value = "tp_trip_id_seq"),
                 @Parameter(name = INCREMENT_PARAM, value = ENHANCED_SEQ_INCREMENT),
             })
-    @ColumnDefault("nextval('trip_id_seq')")
+    @ColumnDefault("nextval('tp_trip_id_seq')")
     private Long id;
 
     @NotNull

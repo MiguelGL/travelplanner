@@ -14,6 +14,8 @@ import org.apache.commons.lang3.StringUtils;
 
 public class TravelPlannerPhysicalNamingStrategy implements PhysicalNamingStrategy {
 
+    private static final String TABLE_NAME_PREFIX = "tp_";
+
     private static final Map<String, String> ABBREVIATIONS = buildAbbreviationMap();
 
     @Override
@@ -32,7 +34,7 @@ public class TravelPlannerPhysicalNamingStrategy implements PhysicalNamingStrate
     public Identifier toPhysicalTableName(Identifier name, JdbcEnvironment jdbcEnvironment) {
         final List<String> parts = splitAndReplace(name.getText());
         return jdbcEnvironment.getIdentifierHelper().toIdentifier(
-                join(parts),
+                TABLE_NAME_PREFIX + join(parts),
                 name.isQuoted()
         );
     }
@@ -45,7 +47,7 @@ public class TravelPlannerPhysicalNamingStrategy implements PhysicalNamingStrate
             parts.add("seq");
         }
         return jdbcEnvironment.getIdentifierHelper().toIdentifier(
-                join(parts),
+                TABLE_NAME_PREFIX + join(parts),
                 name.isQuoted()
         );
     }
