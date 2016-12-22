@@ -2,3 +2,5 @@ target
 deploy/postgresql-*.jar
 deploy/wildfly-*.zip
 nbproject
+nb-configuration.xml
+
