@@ -32,7 +32,7 @@ import org.hibernate.validator.constraints.Email;
 import org.hibernate.validator.constraints.NotBlank;
 
 @Entity
-@Table
+@Table(name = "user_profile") // 'user' is a SQL reserved word
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Getter(AccessLevel.PROTECTED)
 @Setter(AccessLevel.PROTECTED)

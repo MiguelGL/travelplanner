@@ -20,13 +20,18 @@
         <failOnMissingWebXml>false</failOnMissingWebXml>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 
+        <!-- BEGIN: wildfly coherent deps as per imported pom -->
         <version.wildfly>10.1.0.Final</version.wildfly>
-        <version.wildfly.maven.plugin>1.0.2.Final</version.wildfly.maven.plugin>
+        <version.org.hibernate>5.0.10.Final</version.org.hibernate>
         <version.jboss.spec.javaee.7.0>1.0.3.Final</version.jboss.spec.javaee.7.0>
+        <!-- END wildfly coherent deps as per imported pom -->
 
         <version.postgresql>9.4.1212</version.postgresql>
 
         <version.lombok>1.16.12</version.lombok>
+        <version.commons-lang3>3.4</version.commons-lang3>
+
+        <version.wildfly.maven.plugin>1.0.2.Final</version.wildfly.maven.plugin>
     </properties>
 
     <dependencyManagement>
@@ -77,7 +82,32 @@
             <scope>provided</scope>
         </dependency>
         <!-- END: WildFly BOM dependencies -->
+        <!-- BEGIN: not in wildfly pom -->
+        <dependency>
+            <groupId>org.hibernate</groupId>
+            <artifactId>hibernate-java8</artifactId>
+            <version>${version.org.hibernate}</version>
+            <scope>provided</scope>
+        </dependency>
+        <!-- END: not in wildfly pom -->
 
+        <dependency>
+            <groupId>org.apache.commons</groupId>
+            <artifactId>commons-lang3</artifactId>
+            <version>${version.commons-lang3}</version>
+        </dependency>
+        <dependency>
+            <groupId>junit</groupId>
+            <artifactId>junit</artifactId>
+            <version>4.12</version>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.hamcrest</groupId>
+            <artifactId>hamcrest-core</artifactId>
+            <version>1.3</version>
+            <scope>test</scope>
+        </dependency>
     </dependencies>
 
 </project>

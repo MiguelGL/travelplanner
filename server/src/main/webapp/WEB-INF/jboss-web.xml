@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jboss-web version="8.0" xmlns="http://www.jboss.com/xml/ns/javaee"
+           xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+           xsi:schemaLocation="
+                http://www.jboss.com/xml/ns/javaee
+                https://github.com/jboss/metadata/blob/master/web/src/main/resources/schema/jboss-web_8_0.xsd">
+  <context-root>/travelplanner</context-root>
+  <default-encoding>UTF-8</default-encoding>
+  <!--<security-domain flushOnSessionInvalidation="true">xxxx</security-domain>-->
+</jboss-web>
