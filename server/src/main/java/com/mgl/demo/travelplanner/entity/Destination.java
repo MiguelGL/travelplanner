@@ -5,7 +5,6 @@ import com.mgl.demo.travelplanner.entity.support.BaseEntity;
 import static org.hibernate.id.enhanced.SequenceStyleGenerator.INCREMENT_PARAM;
 import static org.hibernate.id.enhanced.SequenceStyleGenerator.SEQUENCE_PARAM;
 
-import java.util.List;
 import java.util.Objects;
 import java.util.Set;
 
