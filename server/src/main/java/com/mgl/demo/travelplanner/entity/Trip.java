@@ -63,7 +63,7 @@ public class Trip extends BaseEntity<Long> {
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "trip_id_gen")
     @GenericGenerator(name = "trip_id_gen", strategy = ENHANCED_SEQ,
             parameters = {
-                @Parameter(name = SEQUENCE_PARAM, value = "tp_trip_id_seq"),
+                @Parameter(name = SEQUENCE_PARAM, value = "trip_id_seq"),
                 @Parameter(name = INCREMENT_PARAM, value = ENHANCED_SEQ_INCREMENT),
             })
     @ColumnDefault("nextval('tp_trip_id_seq')")

@@ -55,53 +55,11 @@ SET default_with_oids = false;
 CREATE TABLE tp_destination (
     id bigint DEFAULT nextval('tp_destination_id_seq'::regclass) NOT NULL,
     updated timestamp without time zone DEFAULT timezone('utc'::text, now()) NOT NULL,
-    name character varying(256) NOT NULL
+    name character varying(64) NOT NULL
 );
 
 
 ALTER TABLE tp_destination OWNER TO "travelplanner-user";
-
---
--- Name: tp_tp_destination_id_seq; Type: SEQUENCE; Schema: public; Owner: travelplanner-user
---
-
-CREATE SEQUENCE tp_tp_destination_id_seq
-    START WITH 1
-    INCREMENT BY 10
-    NO MINVALUE
-    NO MAXVALUE
-    CACHE 1;
-
-
-ALTER TABLE tp_tp_destination_id_seq OWNER TO "travelplanner-user";
-
---
--- Name: tp_tp_trip_id_seq; Type: SEQUENCE; Schema: public; Owner: travelplanner-user
---
-
-CREATE SEQUENCE tp_tp_trip_id_seq
-    START WITH 1
-    INCREMENT BY 10
-    NO MINVALUE
-    NO MAXVALUE
-    CACHE 1;
-
-
-ALTER TABLE tp_tp_trip_id_seq OWNER TO "travelplanner-user";
-
---
--- Name: tp_tp_user_id_seq; Type: SEQUENCE; Schema: public; Owner: travelplanner-user
---
-
-CREATE SEQUENCE tp_tp_user_id_seq
-    START WITH 1
-    INCREMENT BY 10
-    NO MINVALUE
-    NO MAXVALUE
-    CACHE 1;
-
-
-ALTER TABLE tp_tp_user_id_seq OWNER TO "travelplanner-user";
 
 --
 -- Name: tp_trip_id_seq; Type: SEQUENCE; Schema: public; Owner: travelplanner-user
@@ -158,7 +116,8 @@ CREATE TABLE tp_user (
     email character varying(64) NOT NULL,
     first_name character varying(64) NOT NULL,
     last_name character varying(128) DEFAULT ''::character varying NOT NULL,
-    password character varying(60) NOT NULL
+    password character varying(60) NOT NULL,
+    user_role character varying(32) NOT NULL
 );
 
 
@@ -180,27 +139,6 @@ SELECT pg_catalog.setval('tp_destination_id_seq', 1, false);
 
 
 --
--- Name: tp_tp_destination_id_seq; Type: SEQUENCE SET; Schema: public; Owner: travelplanner-user
---
-
-SELECT pg_catalog.setval('tp_tp_destination_id_seq', 1, false);
-
-
---
--- Name: tp_tp_trip_id_seq; Type: SEQUENCE SET; Schema: public; Owner: travelplanner-user
---
-
-SELECT pg_catalog.setval('tp_tp_trip_id_seq', 1, false);
-
-
---
--- Name: tp_tp_user_id_seq; Type: SEQUENCE SET; Schema: public; Owner: travelplanner-user
---
-
-SELECT pg_catalog.setval('tp_tp_user_id_seq', 1, false);
-
-
---
 -- Data for Name: tp_trip; Type: TABLE DATA; Schema: public; Owner: travelplanner-user
 --
 
@@ -219,7 +157,7 @@ SELECT pg_catalog.setval('tp_trip_id_seq', 1, false);
 -- Data for Name: tp_user; Type: TABLE DATA; Schema: public; Owner: travelplanner-user
 --
 
-COPY tp_user (id, updated, email, first_name, last_name, password) FROM stdin;
+COPY tp_user (id, updated, email, first_name, last_name, password, user_role) FROM stdin;
 \.
 
 

@@ -1,5 +1,7 @@
 package com.mgl.demo.travelplanner.entity;
 
+import static com.mgl.demo.travelplanner.entity.Role.ROLE_MAX_LEN;
+
 import com.mgl.demo.travelplanner.entity.support.BaseEntity;
 
 import static org.hibernate.id.enhanced.SequenceStyleGenerator.INCREMENT_PARAM;
@@ -12,6 +14,8 @@ import java.util.regex.Pattern;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -83,7 +87,7 @@ public class User extends BaseEntity<Long> {
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "user_id_gen")
     @GenericGenerator(name = "user_id_gen", strategy = ENHANCED_SEQ,
             parameters = {
-                @Parameter(name = SEQUENCE_PARAM, value = "tp_user_id_seq"),
+                @Parameter(name = SEQUENCE_PARAM, value = "user_id_seq"),
                 @Parameter(name = INCREMENT_PARAM, value = ENHANCED_SEQ_INCREMENT),
             })
     @ColumnDefault("nextval('tp_user_id_seq')")
@@ -103,6 +107,11 @@ public class User extends BaseEntity<Long> {
     private String password;
 
     @NotNull
+    @Enumerated(EnumType.STRING)
+    @Column(nullable = false, length = ROLE_MAX_LEN, name = "user_role") // 'role' SQL reserved
+    private Role role;
+
+    @NotNull
     @NotBlank
     @Size(min = FIRST_NAME_MIN_LEN, max = FIRST_NAME_MAX_LEN)
     @Column(nullable = false, length = FIRST_NAME_MAX_LEN)
@@ -117,14 +126,16 @@ public class User extends BaseEntity<Long> {
     @OneToMany(mappedBy = "user", orphanRemoval = true, cascade = {CascadeType.REMOVE})
     private Set<Trip> trips;
 
-    public User(String email, String firstName, String lastName) {
+    public User(String email, String password, Role role, String firstName, String lastName) {
         this.email = Objects.requireNonNull(email, "email");
+        this.password = Objects.requireNonNull(password, "password");
+        this.role = Objects.requireNonNull(role, "role");
         this.firstName = Objects.requireNonNull(firstName, "firstName");
         this.lastName = Objects.requireNonNull(lastName, "lastName");
     }
 
-    public User(String email, String firstName) {
-        this(email, firstName, NO_LAST_NAME);
+    public User(String email, String password, Role role, String firstName) {
+        this(email, password, role, firstName, NO_LAST_NAME);
     }
 
     public static boolean isValidEmail(String email) {

@@ -47,14 +47,14 @@ public class Destination extends BaseEntity<Long> {
     private static final long serialVersionUID = 1L;
 
     private static final int DESTINATION_MIX_LEN = 1;
-    private static final int DESTINATION_MAX_LEN = 256;
+    private static final int DESTINATION_MAX_LEN = 64;
 
     @Id
     @Column(nullable = false)
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "destination_id_gen")
     @GenericGenerator(name = "destination_id_gen", strategy = ENHANCED_SEQ,
             parameters = {
-                @Parameter(name = SEQUENCE_PARAM, value = "tp_destination_id_seq"),
+                @Parameter(name = SEQUENCE_PARAM, value = "destination_id_seq"),
                 @Parameter(name = INCREMENT_PARAM, value = ENHANCED_SEQ_INCREMENT),
             })
     @ColumnDefault("nextval('tp_destination_id_seq')")
