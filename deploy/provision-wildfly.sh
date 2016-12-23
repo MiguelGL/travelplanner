@@ -74,6 +74,27 @@ xa-data-source enable --name=${PG_DS_NAME}
 reload
 EOF
 
+log_info "~~~ Setting up WildFly security ..."
+$WILDFLY_BASE_DIR/bin/jboss-cli.sh --connect controller=$WILDFLY_MANAGEMENT << EOF
+batch
+
+/subsystem=security/security-domain=${SECURITY_DOMAIN}:add(cache-type=default)
+/subsystem=security/security-domain=${SECURITY_DOMAIN}/authentication=classic:add()
+/subsystem=security/security-domain=${SECURITY_DOMAIN}/authentication=classic/login-module=Database \
+    :add(code=Database, flag=required, \
+         module-options={"dsJndiName"=>"java:jboss/datasources/${PG_DS_NAME}", \
+                         "principalsQuery"=>"${GET_PASSWORD_QUERY}", \
+                         "rolesQuery"=>"${GET_ROLES_QUERY}", \
+                         "hashAlgorithm"=>"${PASSWORD_HASH}", \
+                         "hashEncoding"=>"${PASSWORD_ENCODING}"})
+
+/core-service=management/security-realm=${SECURITY_REALM}:add
+/core-service=management/security-realm=${SECURITY_REALM}/authentication=jaas:add(name=${SECURITY_DOMAIN})
+
+run-batch
+EOF
+
+
 log_info "~~~ Stopping WildFly app. server ..."
 $WILDFLY_BASE_DIR/bin/jboss-cli.sh --connect controller=$WILDFLY_MANAGEMENT << EOF
 shutdown
