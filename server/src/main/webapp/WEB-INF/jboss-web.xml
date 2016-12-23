@@ -6,5 +6,5 @@
                 https://github.com/jboss/metadata/blob/master/web/src/main/resources/schema/jboss-web_8_0.xsd">
   <context-root>/travelplanner</context-root>
   <default-encoding>UTF-8</default-encoding>
-  <!--<security-domain flushOnSessionInvalidation="true">xxxx</security-domain>-->
+  <security-domain flushOnSessionInvalidation="true">travelplanner</security-domain>
 </jboss-web>

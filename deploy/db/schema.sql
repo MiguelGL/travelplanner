@@ -116,7 +116,7 @@ CREATE TABLE tp_user (
     email character varying(64) NOT NULL,
     first_name character varying(64) NOT NULL,
     last_name character varying(128) DEFAULT ''::character varying NOT NULL,
-    password character varying(60) NOT NULL,
+    password character varying(44) NOT NULL,
     user_role character varying(32) NOT NULL
 );
 

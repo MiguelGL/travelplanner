@@ -7,6 +7,7 @@ import com.mgl.demo.travelplanner.entity.support.BaseEntity;
 import static org.hibernate.id.enhanced.SequenceStyleGenerator.INCREMENT_PARAM;
 import static org.hibernate.id.enhanced.SequenceStyleGenerator.SEQUENCE_PARAM;
 
+import java.util.Base64;
 import java.util.Objects;
 import java.util.Set;
 import java.util.regex.Pattern;
@@ -25,8 +26,15 @@ import javax.persistence.Table;
 import javax.persistence.UniqueConstraint;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
+import javax.xml.bind.annotation.XmlAccessType;
+import javax.xml.bind.annotation.XmlAccessorType;
+import javax.xml.bind.annotation.XmlRootElement;
+import javax.xml.bind.annotation.XmlTransient;
 
+import com.google.common.base.Charsets;
 import com.google.common.base.Strings;
+import com.google.common.hash.HashCode;
+import com.google.common.hash.Hashing;
 import lombok.AccessLevel;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
@@ -38,7 +46,6 @@ import org.hibernate.annotations.GenericGenerator;
 import org.hibernate.annotations.Parameter;
 import org.hibernate.validator.constraints.Email;
 import org.hibernate.validator.constraints.NotBlank;
-import org.mindrot.jbcrypt.BCrypt;
 
 @Entity
 @Table(
@@ -49,7 +56,9 @@ import org.mindrot.jbcrypt.BCrypt;
         uniqueConstraints = {
             @UniqueConstraint(name = "user__email_uidx", columnNames = {"email"})
         }
-) 
+)
+@XmlRootElement
+@XmlAccessorType(XmlAccessType.FIELD)
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Getter(AccessLevel.PROTECTED)
 @Setter(AccessLevel.PROTECTED)
@@ -67,11 +76,9 @@ public class User extends BaseEntity<Long> {
     private static final String VALID_EMAIL_REGEX = ".+@.+";
     private static final Pattern VALID_EMAIL_PATTERN = Pattern.compile(VALID_EMAIL_REGEX);
 
-    private static final int PASSWORD_SALT_GEN_ROUNDS = 10;
-
-    // Sample BCrypt hasssed password: $2a$10$MN4pQWWQAzDWVcme7gq/L.oUEQ42bPRanRkupHDEmxLRUQv7dmM/e
-    private static final int PASSWORD_MIN_LEN = 60;
-    private static final int PASSWORD_MAX_LEN = 60;
+    // base64(sha256(admin)) -> jGl25bVBBBW96Qi9Te4V37Fnqchz/Eu4qB9vKrRIqRg=
+    private static final int PASSWORD_MIN_LEN = 44;
+    private static final int PASSWORD_MAX_LEN = 44;
 
     private static final String PLAIN_VALID_PASSWORD_REGEX = "^[0-9a-zA-Z\\_\\-]+$";
     private static final Pattern PLAIN_VALID_PASSWORD_PATTERN = Pattern.compile(PLAIN_VALID_PASSWORD_REGEX);
@@ -104,6 +111,7 @@ public class User extends BaseEntity<Long> {
     @NotBlank
     @Size(min = PASSWORD_MIN_LEN, max = PASSWORD_MAX_LEN)
     @Column(nullable = false, length = PASSWORD_MAX_LEN)
+    @XmlTransient
     private String password;
 
     @NotNull
@@ -124,6 +132,7 @@ public class User extends BaseEntity<Long> {
     private String lastName = NO_LAST_NAME;
 
     @OneToMany(mappedBy = "user", orphanRemoval = true, cascade = {CascadeType.REMOVE})
+    @XmlTransient
     private Set<Trip> trips;
 
     public User(String email, String password, Role role, String firstName, String lastName) {
@@ -147,13 +156,14 @@ public class User extends BaseEntity<Long> {
     }
 
     public static String encryptPlainPassword(String plainPassword) {
-        String salt = BCrypt.gensalt(PASSWORD_SALT_GEN_ROUNDS);
-        return BCrypt.hashpw(plainPassword, salt);
+        HashCode hashedPassword = Hashing.sha256().hashString(plainPassword, Charsets.UTF_8);
+        String encodedHashedPassword = Base64.getEncoder().encodeToString(hashedPassword.asBytes());
+        return encodedHashedPassword;
     }
 
     public String getFullName() {
         StringBuilder sb = new StringBuilder(getFirstName());
-        if (!getLastName().isEmpty()) {
+        if (!NO_LAST_NAME.equals(getLastName())) {
             sb.append(getLastName());
         }
         return sb.toString();

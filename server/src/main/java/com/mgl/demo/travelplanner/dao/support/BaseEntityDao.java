@@ -5,10 +5,14 @@ import static com.mgl.demo.travelplanner.entity.support.PersistenceUnits.PG_SERV
 import java.util.Objects;
 
 import javax.persistence.EntityManager;
+import javax.persistence.EntityNotFoundException;
 import javax.persistence.PersistenceContext;
 
 import com.mgl.demo.travelplanner.entity.support.BaseEntity;
+import com.querydsl.core.types.Predicate;
 import com.querydsl.core.types.dsl.EntityPathBase;
+import com.querydsl.core.types.dsl.Expressions;
+import com.querydsl.jpa.impl.JPAQueryFactory;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.experimental.Accessors;
@@ -36,6 +40,32 @@ public abstract class BaseEntityDao<
         this.clazz = Objects.requireNonNull(clazz, "clazz");
         this.pathBase = Objects.requireNonNull(pathBase, "pathBase");
         this.entityName = this.clazz.getSimpleName();
+    }
+
+    protected JPAQueryFactory jpaQueryFactory() {
+        return new JPAQueryFactory(em);
+    }
+
+    public void create(E entity) {
+        em().persist(Objects.requireNonNull(entity, entityName + " entity"));
+    }
+
+    public boolean existsAccordingTo(Predicate ...predicates) {
+        JPAQueryFactory factory = jpaQueryFactory();
+        return factory
+            .select(Expressions.TRUE)
+            .from(pathBase())
+            .where(factory.from(pathBase()).where(predicates).exists())
+            .fetchOne() != null;
+    }
+
+    public E findExisting(Predicate ...predicates) {
+        E maybeEntity = (E) jpaQueryFactory().from(pathBase()).where(predicates).fetchOne();
+        if (maybeEntity == null) {
+            throw new EntityNotFoundException("Expected existing " + entityName + " not found");
+        } else {
+            return maybeEntity;
+        }
     }
 
 }

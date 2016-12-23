@@ -10,4 +10,12 @@ public class UserDao extends BaseEntityDao<User, QUser, UserDao> {
         super(User.class, QUser.user);
     }
 
+    public boolean existsUserByEmail(String email) {
+        return existsAccordingTo(pathBase().email.eq(email));
+    }
+
+    public User findByEmail(String email) {
+        return findExisting(pathBase().email.eq(email));
+    }
+
 }

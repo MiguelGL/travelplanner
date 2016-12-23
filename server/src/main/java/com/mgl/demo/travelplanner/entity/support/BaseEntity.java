@@ -7,6 +7,10 @@ import java.time.Instant;
 import javax.persistence.Column;
 import javax.persistence.MappedSuperclass;
 import javax.persistence.Version;
+import javax.xml.bind.annotation.XmlAccessType;
+import javax.xml.bind.annotation.XmlAccessorType;
+import javax.xml.bind.annotation.XmlElement;
+import javax.xml.bind.annotation.XmlRootElement;
 
 import lombok.AccessLevel;
 import lombok.Getter;
@@ -16,6 +20,8 @@ import lombok.ToString;
 import org.hibernate.annotations.ColumnDefault;
 
 @MappedSuperclass
+@XmlRootElement
+@XmlAccessorType(XmlAccessType.FIELD)
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Getter(AccessLevel.PROTECTED)
 @Setter(AccessLevel.PROTECTED)
@@ -27,6 +33,7 @@ public abstract class BaseEntity<I extends Object> implements Serializable {
     protected static final String ENHANCED_SEQ = "enhanced-sequence";
     protected static final String ENHANCED_SEQ_INCREMENT = "10";
 
+    @XmlElement
     protected abstract I getId();
     protected abstract void setId(I id);
 
