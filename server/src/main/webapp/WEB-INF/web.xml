@@ -21,11 +21,6 @@
         <param-value>true</param-value>
     </context-param>
 
-    <login-config>
-        <auth-method>BASIC</auth-method>
-        <realm-name>TravelPlannerRealm</realm-name>
-    </login-config>
-
     <security-constraint>
         <web-resource-collection>
             <web-resource-name/>
