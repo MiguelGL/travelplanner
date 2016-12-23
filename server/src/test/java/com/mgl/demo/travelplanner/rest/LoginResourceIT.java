@@ -2,11 +2,11 @@ package com.mgl.demo.travelplanner.rest;
 
 import static io.restassured.RestAssured.*;
 import static io.restassured.config.RestAssuredConfig.newConfig;
-import static io.restassured.matcher.RestAssuredMatchers.*;
 import static org.hamcrest.Matchers.*;
 
 import javax.ws.rs.core.Response.Status;
 
+import com.google.common.base.Charsets;
 import com.mgl.demo.travelplanner.rest.support.IntegrationTestsSupport;
 import io.restassured.RestAssured;
 import io.restassured.config.SessionConfig;
@@ -30,6 +30,7 @@ public class LoginResourceIT {
 
         RestAssured.config = newConfig().sessionConfig(
                 new SessionConfig().sessionIdName("TAVEL-PLANNER-SESSION-ID"));
+        RestAssured.config.getEncoderConfig().defaultContentCharset(Charsets.UTF_8.name());
         RestAssured.enableLoggingOfRequestAndResponseIfValidationFails();
         RestAssured.baseURI = "http://localhost";
         RestAssured.port = 8080;
