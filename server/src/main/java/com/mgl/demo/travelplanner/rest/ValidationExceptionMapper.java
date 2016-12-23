@@ -14,7 +14,7 @@ public class ValidationExceptionMapper implements ExceptionMapper<ValidationExce
 
     @Override
     public Response toResponse(ValidationException exception) {
-        log.warn("Validation exception", String.valueOf(exception));
+        log.warn("Validation exception: {}", String.valueOf(exception));
         return Response.status(Status.BAD_REQUEST).build();
     }
 
