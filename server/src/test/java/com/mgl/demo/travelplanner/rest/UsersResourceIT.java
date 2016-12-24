@@ -80,4 +80,42 @@ public class UsersResourceIT extends BaseResourceIT {
         createUser("MANAGER");
     }
 
+    @Test
+    public void testListUsers() {
+        given()
+                .filter(sessionFilter)
+                .accept(ContentType.JSON)
+        .when()
+                .get("/sec/users")
+        .then()
+                .statusCode(Status.OK.getStatusCode())
+                .contentType(ContentType.JSON);
+
+        given()
+                .filter(sessionFilter)
+                .accept(ContentType.JSON)
+                .queryParam("orderBy", "EMAIL")
+                .queryParam("orderSpec", "ASC")
+                .queryParam("offset", 2)
+                .queryParam("limit", 10)
+        .when()
+                .get("/sec/users")
+        .then()
+                .statusCode(Status.OK.getStatusCode())
+                .contentType(ContentType.JSON);
+
+        given()
+                .filter(sessionFilter)
+                .accept(ContentType.JSON)
+                .queryParam("orderBy", "FIRST_NAME")
+                .queryParam("orderSpec", "DESC")
+                .queryParam("offset", 2)
+                .queryParam("limit", 10)
+        .when()
+                .get("/sec/users")
+        .then()
+                .statusCode(Status.OK.getStatusCode())
+                .contentType(ContentType.JSON);
+    }
+
 }
