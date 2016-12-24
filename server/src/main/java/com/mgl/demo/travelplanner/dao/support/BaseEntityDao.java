@@ -2,16 +2,20 @@ package com.mgl.demo.travelplanner.dao.support;
 
 import static com.mgl.demo.travelplanner.entity.support.PersistenceUnits.PG_SERVER_DS_PU_NAME;
 
+import java.util.List;
 import java.util.Objects;
+import java.util.Optional;
 
 import javax.persistence.EntityManager;
 import javax.persistence.EntityNotFoundException;
 import javax.persistence.PersistenceContext;
 
 import com.mgl.demo.travelplanner.entity.support.BaseEntity;
+import com.querydsl.core.types.OrderSpecifier;
 import com.querydsl.core.types.Predicate;
 import com.querydsl.core.types.dsl.EntityPathBase;
 import com.querydsl.core.types.dsl.Expressions;
+import com.querydsl.jpa.impl.JPAQuery;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import lombok.AccessLevel;
 import lombok.Getter;
@@ -60,12 +64,24 @@ public abstract class BaseEntityDao<
     }
 
     public E findExisting(Predicate ...predicates) {
-        E maybeEntity = (E) jpaQueryFactory().from(pathBase()).where(predicates).fetchOne();
+        E maybeEntity = jpaQueryFactory().selectFrom(pathBase()).where(predicates).fetchOne();
         if (maybeEntity == null) {
             throw new EntityNotFoundException("Expected existing " + entityName + " not found");
         } else {
             return maybeEntity;
         }
+    }
+
+    public List<E> find(
+            Optional<Long> maybeOffset,
+            Optional<Long> maybeLimit,
+            Optional<OrderSpecifier<?>> maybeOrder,
+            Predicate ...predicates) {
+        JPAQuery<E> query = jpaQueryFactory().selectFrom(pathBase()).where(predicates);
+        maybeOffset.ifPresent(offset -> query.offset(offset));
+        maybeLimit.ifPresent(limit -> query.limit(limit));
+        maybeOrder.ifPresent(order -> query.orderBy(order));
+        return query.fetch();
     }
 
 }

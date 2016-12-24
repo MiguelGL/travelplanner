@@ -1,6 +1,7 @@
 package com.mgl.demo.travelplanner.entity;
 
 import static com.mgl.demo.travelplanner.entity.Role.ROLE_MAX_LEN;
+import static lombok.AccessLevel.PUBLIC;
 
 import com.mgl.demo.travelplanner.entity.support.BaseEntity;
 
@@ -28,10 +29,12 @@ import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
+import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlTransient;
 
 import com.google.common.base.Charsets;
+import com.google.common.base.MoreObjects;
 import com.google.common.base.Strings;
 import com.google.common.hash.HashCode;
 import com.google.common.hash.Hashing;
@@ -112,7 +115,7 @@ public class User extends BaseEntity<Long> {
     @Size(min = PASSWORD_MIN_LEN, max = PASSWORD_MAX_LEN)
     @Column(nullable = false, length = PASSWORD_MAX_LEN)
     @XmlTransient
-    private String password;
+    private @Setter(PUBLIC) String password;
 
     @NotNull
     @Enumerated(EnumType.STRING)
@@ -134,6 +137,15 @@ public class User extends BaseEntity<Long> {
     @OneToMany(mappedBy = "user", orphanRemoval = true, cascade = {CascadeType.REMOVE})
     @XmlTransient
     private Set<Trip> trips;
+
+    public static User buildNewUser(User userTemplate) {
+        return new User(
+                Strings.nullToEmpty(userTemplate.getEmail()),
+                Strings.nullToEmpty(userTemplate.getPassword()),
+                MoreObjects.firstNonNull(userTemplate.getRole(), Role.REGULAR_USER),
+                Strings.nullToEmpty(userTemplate.getFirstName()),
+                Strings.nullToEmpty(userTemplate.getLastName()));
+    }
 
     public User(String email, String password, Role role, String firstName, String lastName) {
         this.email = Objects.requireNonNull(email, "email");
@@ -161,6 +173,7 @@ public class User extends BaseEntity<Long> {
         return encodedHashedPassword;
     }
 
+    @XmlElement
     public String getFullName() {
         StringBuilder sb = new StringBuilder(getFirstName());
         if (!NO_LAST_NAME.equals(getLastName())) {

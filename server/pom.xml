@@ -24,6 +24,7 @@
         <version.wildfly>10.1.0.Final</version.wildfly>
         <version.org.hibernate>5.0.10.Final</version.org.hibernate>
         <version.jboss.spec.javaee.7.0>1.0.3.Final</version.jboss.spec.javaee.7.0>
+        <version.jackson>2.7.4</version.jackson>
         <!-- END wildfly coherent deps as per imported pom -->
 
         <version.postgresql>9.4.1212</version.postgresql>
@@ -108,6 +109,11 @@
             <artifactId>jboss-servlet-api_3.1_spec</artifactId>
             <scope>provided</scope>
         </dependency>
+        <dependency>
+            <groupId>org.jboss.spec.javax.annotation</groupId>
+            <artifactId>jboss-annotations-api_1.2_spec</artifactId>
+            <scope>provided</scope>
+        </dependency>
         <!-- END: WildFly BOM dependencies -->
         <!-- BEGIN: not in wildfly pom -->
         <dependency>
@@ -158,6 +164,18 @@
             <groupId>io.rest-assured</groupId>
             <artifactId>rest-assured</artifactId>
             <version>${version.rest-assured}</version>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>com.fasterxml.jackson.core</groupId>
+            <artifactId>jackson-core</artifactId>
+            <version>${version.jackson}</version>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>com.fasterxml.jackson.core</groupId>
+            <artifactId>jackson-databind</artifactId>
+            <version>${version.jackson}</version>
             <scope>test</scope>
         </dependency>
     </dependencies>

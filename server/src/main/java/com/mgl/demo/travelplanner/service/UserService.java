@@ -1,5 +1,7 @@
 package com.mgl.demo.travelplanner.service;
 
+import javax.annotation.security.RolesAllowed;
+
 import com.mgl.demo.travelplanner.service.support.InvalidValuesException;
 import com.mgl.demo.travelplanner.service.support.EntityAlreadyExistsException;
 
@@ -18,9 +20,11 @@ public class UserService {
 
     @Inject private UserDao userDao;
 
-    public User createRegularUser(
+    @RolesAllowed({Role.ADMINISTRATOR_NAME})
+    public User createUser(
             @NotBlank String email,
             @NotBlank String plainPassword,
+            Role role,
             @NotBlank String firstName,
             String lastName) {
         if (!User.isValidPlainPassword(plainPassword)) {
@@ -34,10 +38,36 @@ public class UserService {
         }
 
         String password = User.encryptPlainPassword(plainPassword);
-        User user = new User(email, password, Role.REGULAR_USER, firstName, lastName);
+        User user = new User(email, password, role, firstName, lastName);
         log.info("create | email={}", email);
         userDao.create(user);
         return user;
+    }
+
+    public User createRegularUser(
+            @NotBlank String email,
+            @NotBlank String plainPassword,
+            @NotBlank String firstName,
+            String lastName) {
+        return createUser(email, plainPassword, Role.REGULAR_USER, firstName, lastName);
+    }
+
+    @RolesAllowed({Role.ADMINISTRATOR_NAME})
+    public User createAdminUser(
+            @NotBlank String email,
+            @NotBlank String plainPassword,
+            @NotBlank String firstName,
+            String lastName) {
+        return createUser(email, plainPassword, Role.ADMINISTRATOR, firstName, lastName);
+    }
+
+    @RolesAllowed({Role.ADMINISTRATOR_NAME})
+    public User createManagerUser(
+            @NotBlank String email,
+            @NotBlank String plainPassword,
+            @NotBlank String firstName,
+            String lastName) {
+        return createUser(email, plainPassword, Role.MANAGER, firstName, lastName);
     }
 
 }
