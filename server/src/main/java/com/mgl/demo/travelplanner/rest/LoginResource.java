@@ -1,9 +1,12 @@
 package com.mgl.demo.travelplanner.rest;
 
+import java.io.IOException;
+
 import javax.ejb.Stateless;
 import javax.inject.Inject;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.DELETE;
 import javax.ws.rs.DefaultValue;
@@ -50,10 +53,16 @@ public class LoginResource {
     public User login(
             @FormParam("email") @DefaultValue("") String email,
             @FormParam("password") @DefaultValue("") String password,
-            @Context HttpServletRequest request) {
+            @Context HttpServletRequest request,
+            @Context HttpServletResponse response) {
         try {
             request.login(email, password);
-        } catch (ServletException ex) {
+            boolean authenticated = request.authenticate(response);
+            if (!authenticated) {
+                log.warn("authentication error | email={}", email);
+                throw new WebApplicationException(Status.UNAUTHORIZED);
+            }
+        } catch (ServletException | IOException ex) {
             log.warn("login error | email={}", email, ex);
             throw new WebApplicationException(Status.UNAUTHORIZED);
         }
