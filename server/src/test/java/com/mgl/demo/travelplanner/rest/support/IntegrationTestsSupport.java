@@ -26,11 +26,11 @@ public class IntegrationTestsSupport {
     }
 
     public String firstName() {
-        return "First-testIdStr";
+        return "First-" + testIdStr;
     }
 
     public String lastName() {
-        return "Last-testIdStr";
+        return "Last-" + testIdStr;
     }
 
 }
