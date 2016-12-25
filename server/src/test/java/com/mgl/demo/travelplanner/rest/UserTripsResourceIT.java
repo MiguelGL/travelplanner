@@ -146,6 +146,22 @@ public class UserTripsResourceIT extends BaseResourceIT {
         given()
                 .filter(sessionFilter)
                 .accept(ContentType.JSON)
+                .contentType(ContentType.JSON)
+                .pathParam("userId", jsonUser.getLong("id"))
+                .body(ImmutableMap.of(
+                        "destinationName", support.getTestId() + "-dst-2",
+                        "startDate", startTs,
+                        "endDate", endTs,
+                        "comment", "Have a nice test trip again"
+                ))
+        .when()
+                .post("/sec/users/{userId}/trips")
+        .then()
+                .statusCode(Status.CONFLICT.getStatusCode());
+
+        given()
+                .filter(sessionFilter)
+                .accept(ContentType.JSON)
                 .pathParam("userId", jsonUser.getLong("id"))
         .when()
                 .get("/sec/users/{userId}/trips")
