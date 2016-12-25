@@ -72,7 +72,7 @@ public class TripDao extends BaseEntityDao<Long, Trip, QTrip> {
                 orderByField.maybeBuildOrderSpecifier(orderBySpec));
     }
 
-    public boolean existsUserOverlappingTrip(User user,
+    public boolean existsOverlappingUserTrip(User user,
             LocalDate startDate, LocalDate endDate) {
         return existsAccordingTo(
                 pathBase().user.eq(user)

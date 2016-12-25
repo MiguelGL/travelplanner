@@ -38,7 +38,7 @@ public class TripService {
             String comment) {
         validateUserTripAccess(user);
         Trip.validateDates(startDate, endDate);
-        if (tripDao.existsUserOverlappingTrip(user, startDate, endDate)) {
+        if (tripDao.existsOverlappingUserTrip(user, startDate, endDate)) {
             throw new ConflictingValuesException();
         }
         Destination destination = destinationService.ensureDestinationExists(destinationName);
