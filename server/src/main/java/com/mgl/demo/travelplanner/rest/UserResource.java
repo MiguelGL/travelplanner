@@ -19,7 +19,7 @@ import com.mgl.demo.travelplanner.service.UserService;
 
 @Path("/sec/users/{userId}")
 @Stateless
-@RolesAllowed({Role.ADMINISTRATOR_NAME})
+@RolesAllowed({Role.ADMINISTRATOR_NAME, Role.MANAGER_NAME})
 public class UserResource {
 
     @Inject private UserDao userDao;

@@ -36,7 +36,7 @@ import lombok.ToString;
 
 @Stateless
 @Path("/sec/users")
-@RolesAllowed({Role.ADMINISTRATOR_NAME})
+@RolesAllowed({Role.ADMINISTRATOR_NAME, Role.MANAGER_NAME})
 public class UsersResource {
 
     @Inject private UserDao userDao;

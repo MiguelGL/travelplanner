@@ -19,7 +19,7 @@ import org.hibernate.validator.constraints.NotBlank;
 
 @Stateless
 @Slf4j
-@RolesAllowed({Role.ADMINISTRATOR_NAME})
+@RolesAllowed({Role.ADMINISTRATOR_NAME, Role.MANAGER_NAME})
 public class UserService {
 
     @Inject private UserDao userDao;
