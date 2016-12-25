@@ -200,4 +200,8 @@ public class User extends BaseEntity<Long> {
         return sb.toString();
     }
 
+    public boolean hasAllUserTripsAccess() {
+        return getRole().hasAllUserTripsAccess();
+    }
+
 }

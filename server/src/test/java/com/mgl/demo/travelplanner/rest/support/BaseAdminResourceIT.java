@@ -17,11 +17,15 @@ public class BaseAdminResourceIT extends BaseResourceIT {
 
     protected SessionFilter sessionFilter;
 
+    public static SessionFilter adminLogin() {
+        return login("admin@email.com", "adminpass");
+    }
+
     @Before
     @Override
     public void setUp() {
         super.setUp();
-        sessionFilter = login("admin@email.com", "adminpass");
+        sessionFilter = adminLogin();
     }
 
     @After

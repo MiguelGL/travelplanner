@@ -6,6 +6,7 @@ import static org.hibernate.id.enhanced.SequenceStyleGenerator.SEQUENCE_PARAM;
 import java.time.LocalDate;
 import java.util.Objects;
 
+import javax.annotation.Nullable;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -21,8 +22,13 @@ import javax.persistence.UniqueConstraint;
 import javax.validation.ValidationException;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
+import javax.xml.bind.annotation.XmlElement;
+import javax.xml.bind.annotation.XmlTransient;
+import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
 
+import com.google.common.base.MoreObjects;
 import com.mgl.demo.travelplanner.entity.support.BaseEntity;
+import com.mgl.demo.travelplanner.entity.support.LocalDateAdapter;
 import lombok.AccessLevel;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
@@ -55,8 +61,8 @@ public class Trip extends BaseEntity<Long> {
 
     private static final long serialVersionUID = 1L;
 
-    private static final int COMMENT_MIX_LEN = 0;
-    private static final int COMMENT_MAX_LEN = 512;
+    public static final int COMMENT_MIX_LEN = 0;
+    public static final int COMMENT_MAX_LEN = 512;
 
     @Id
     @Column(nullable = false)
@@ -72,21 +78,25 @@ public class Trip extends BaseEntity<Long> {
     @NotNull
     @ManyToOne(optional = false)
     @JoinColumn(nullable = false)
+    @XmlTransient
     private User user;
 
     @NotNull
     @ManyToOne(optional = false)
     @JoinColumn(nullable = false)
+    @XmlTransient
     private Destination destination;
 
     @NotNull
     // @Temporal(TemporalType.DATE)
     @Column(nullable = false)
+    @XmlJavaTypeAdapter(LocalDateAdapter.class)
     private LocalDate startDate;
 
     @NotNull
     // @Temporal(TemporalType.DATE)
     @Column(nullable = false)
+    @XmlJavaTypeAdapter(LocalDateAdapter.class)
     private LocalDate endDate;
 
     @NotNull
@@ -111,13 +121,31 @@ public class Trip extends BaseEntity<Long> {
         return NO_COMMENT.equals(getComment());
     }
 
+    public static void validateDates(LocalDate startDate, LocalDate endDate) {
+        if (endDate.isBefore(startDate)) {
+            throw new ValidationException(String.format(
+                    "Start date '%s' must be before or equal to end date '%s'",
+                    startDate, endDate));
+        }
+    }
+
     @PrePersist @PreUpdate
     public void prePersist() {
-        if (!getStartDate().isBefore(getEndDate())) {
-            throw new ValidationException(String.format(
-                    "Start date '%s' must be lower than end date '%s'",
-                    getStartDate(), getEndDate()));
-        }
+        validateDates(getStartDate(), getEndDate());
+    }
+
+    @XmlElement
+    String getUserEmail() {
+        return getUser().getEmail();
+    }
+
+    @XmlElement
+    String getDestinationName() {
+        return getDestination().getName();
+    }
+
+    public static String ensureComment(@Nullable String comment) {
+        return MoreObjects.firstNonNull(comment, NO_COMMENT);
     }
 
 }

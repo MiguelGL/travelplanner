@@ -19,6 +19,7 @@ import javax.persistence.Table;
 import javax.persistence.UniqueConstraint;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
+import javax.xml.bind.annotation.XmlTransient;
 
 import lombok.AccessLevel;
 import lombok.EqualsAndHashCode;
@@ -46,8 +47,8 @@ public class Destination extends BaseEntity<Long> {
 
     private static final long serialVersionUID = 1L;
 
-    private static final int DESTINATION_MIX_LEN = 1;
-    private static final int DESTINATION_MAX_LEN = 64;
+    public static final int DESTINATION_MIX_LEN = 1;
+    public static final int DESTINATION_MAX_LEN = 64;
 
     @Id
     @Column(nullable = false)
@@ -67,6 +68,7 @@ public class Destination extends BaseEntity<Long> {
     private String name;
 
     @OneToMany(mappedBy = "destination", orphanRemoval = true, cascade = {CascadeType.REMOVE})
+    @XmlTransient
     private Set<Trip> trips;
 
     public Destination(String name) {

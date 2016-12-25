@@ -82,6 +82,11 @@ public abstract class BaseEntityDao<
         }
     }
 
+    public Optional<E> maybeFind(Predicate ...predicates) {
+        E maybeEntity = jpaQueryFactory().selectFrom(pathBase()).where(predicates).fetchOne();
+        return Optional.ofNullable(maybeEntity);
+    }
+
     public E findExisting(Predicate ...predicates) {
         E maybeEntity = jpaQueryFactory().selectFrom(pathBase()).where(predicates).fetchOne();
         if (maybeEntity == null) {

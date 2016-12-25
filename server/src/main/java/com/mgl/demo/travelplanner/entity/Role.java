@@ -12,4 +12,8 @@ public enum Role {
 
     public static final int ROLE_MAX_LEN = 32;
 
+    boolean hasAllUserTripsAccess() {
+        return this == ADMINISTRATOR;
+    }
+
 }
