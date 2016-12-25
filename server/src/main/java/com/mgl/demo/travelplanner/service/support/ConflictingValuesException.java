@@ -7,7 +7,7 @@ public class ConflictingValuesException extends ServiceException {
     private static final long serialVersionUID = 1L;
 
     public ConflictingValuesException() {
-        super(Status.PRECONDITION_FAILED);
+        super(Status.CONFLICT);
     }
 
 }
