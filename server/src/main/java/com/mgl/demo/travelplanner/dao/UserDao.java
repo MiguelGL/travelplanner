@@ -12,7 +12,7 @@ import com.querydsl.core.types.OrderSpecifier;
 import com.querydsl.core.types.dsl.ComparableExpressionBase;
 import lombok.RequiredArgsConstructor;
 
-public class UserDao extends BaseEntityDao<User, QUser, UserDao> {
+public class UserDao extends BaseEntityDao<Long, User, QUser> {
 
     @RequiredArgsConstructor
     public static enum OrderByField {

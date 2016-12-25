@@ -1,6 +1,7 @@
 package com.mgl.demo.travelplanner.dao.support;
 
 import static com.mgl.demo.travelplanner.entity.support.PersistenceUnits.PG_SERVER_DS_PU_NAME;
+import static java.util.Objects.requireNonNull;
 
 import java.util.List;
 import java.util.Objects;
@@ -23,9 +24,9 @@ import lombok.experimental.Accessors;
 
 @Accessors(fluent = true)
 public abstract class BaseEntityDao<
-        E extends BaseEntity,
-        P extends EntityPathBase<E>,
-        D extends BaseEntityDao> {
+        I extends Object,
+        E extends BaseEntity<I>,
+        P extends EntityPathBase<E>> {
 
     @PersistenceContext(unitName = PG_SERVER_DS_PU_NAME)
     @Getter(AccessLevel.PROTECTED)
@@ -41,8 +42,8 @@ public abstract class BaseEntityDao<
     private final String entityName;
 
     protected BaseEntityDao(Class<E> clazz, P pathBase) {
-        this.clazz = Objects.requireNonNull(clazz, "clazz");
-        this.pathBase = Objects.requireNonNull(pathBase, "pathBase");
+        this.clazz = requireNonNull(clazz, "clazz");
+        this.pathBase = requireNonNull(pathBase, "pathBase");
         this.entityName = this.clazz.getSimpleName();
     }
 
@@ -51,7 +52,15 @@ public abstract class BaseEntityDao<
     }
 
     public void create(E entity) {
-        em().persist(Objects.requireNonNull(entity, entityName + " entity"));
+        em().persist(requireNonNull(entity, entityName + " entity"));
+    }
+
+    public E update(E entity) {
+        return em().merge(requireNonNull(entity, entityName + " entity"));
+    }
+
+    public void delete(E entity) {
+        em().remove(requireNonNull(entity, entityName + " entity"));
     }
 
     public boolean existsAccordingTo(Predicate ...predicates) {
@@ -61,6 +70,16 @@ public abstract class BaseEntityDao<
             .from(pathBase())
             .where(factory.from(pathBase()).where(predicates).exists())
             .fetchOne() != null;
+    }
+
+    public E findById(I id) {
+        E entity = em().find(clazz, id);
+        if (entity == null) {
+            throw new EntityNotFoundException("Expected existing " + entityName
+                    + "with id '" + id + "' not found");
+        } else {
+            return entity;
+        }
     }
 
     public E findExisting(Predicate ...predicates) {

@@ -12,6 +12,7 @@ import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
 
+import com.mgl.demo.travelplanner.entity.User;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -48,6 +49,11 @@ public abstract class BaseEntity<I extends Object> implements Serializable {
 
     protected void setLastUpdateTs(Instant lastUpdateTs) {
         this.updated = new Timestamp(lastUpdateTs.toEpochMilli());
+    }
+
+    public <E extends BaseEntity<I>> void prepareForUpdate(E template) {
+        // id: not updatable
+        // updated: not updatable
     }
 
 }

@@ -1,5 +1,6 @@
 package com.mgl.demo.travelplanner.entity;
 
+import static com.google.common.base.MoreObjects.firstNonNull;
 import static com.mgl.demo.travelplanner.entity.Role.ROLE_MAX_LEN;
 import static lombok.AccessLevel.PUBLIC;
 
@@ -25,6 +26,7 @@ import javax.persistence.Index;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.persistence.UniqueConstraint;
+import javax.validation.ValidationException;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import javax.xml.bind.annotation.XmlAccessType;
@@ -159,12 +161,28 @@ public class User extends BaseEntity<Long> {
         this(email, password, role, firstName, NO_LAST_NAME);
     }
 
+    public void prepareForUpdate(User userTemplate) {
+        super.prepareForUpdate(userTemplate);
+        // email: not updatable
+        setPassword(firstNonNull(userTemplate.getPassword(), getPassword()));
+        // role: not updatable
+        setFirstName(firstNonNull(userTemplate.getFirstName(), getFirstName()));
+        setLastName(firstNonNull(userTemplate.getLastName(), getLastName()));
+    }
+
     public static boolean isValidEmail(String email) {
         return VALID_EMAIL_PATTERN.matcher(Strings.nullToEmpty(email)).matches();
     }
 
     public static boolean isValidPlainPassword(String plainPassword) {
         return PLAIN_VALID_PASSWORD_PATTERN.matcher(Strings.nullToEmpty(plainPassword)).matches();
+    }
+
+    public static String validateAndEncryptPlainPassword(String plainPassword) {
+        if (!isValidPlainPassword(plainPassword)) {
+            throw new ValidationException("Invalid password");
+        }
+        return encryptPlainPassword(plainPassword);
     }
 
     public static String encryptPlainPassword(String plainPassword) {

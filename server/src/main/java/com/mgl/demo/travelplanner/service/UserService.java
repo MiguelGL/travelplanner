@@ -1,5 +1,8 @@
 package com.mgl.demo.travelplanner.service;
 
+import java.util.Optional;
+
+import javax.annotation.security.PermitAll;
 import javax.annotation.security.RolesAllowed;
 
 import com.mgl.demo.travelplanner.service.support.InvalidValuesException;
@@ -16,11 +19,11 @@ import org.hibernate.validator.constraints.NotBlank;
 
 @Stateless
 @Slf4j
+@RolesAllowed({Role.ADMINISTRATOR_NAME})
 public class UserService {
 
     @Inject private UserDao userDao;
 
-    @RolesAllowed({Role.ADMINISTRATOR_NAME})
     public User createUser(
             @NotBlank String email,
             @NotBlank String plainPassword,
@@ -44,6 +47,7 @@ public class UserService {
         return user;
     }
 
+    @PermitAll
     public User createRegularUser(
             @NotBlank String email,
             @NotBlank String plainPassword,
@@ -52,7 +56,6 @@ public class UserService {
         return createUser(email, plainPassword, Role.REGULAR_USER, firstName, lastName);
     }
 
-    @RolesAllowed({Role.ADMINISTRATOR_NAME})
     public User createAdminUser(
             @NotBlank String email,
             @NotBlank String plainPassword,
@@ -61,13 +64,20 @@ public class UserService {
         return createUser(email, plainPassword, Role.ADMINISTRATOR, firstName, lastName);
     }
 
-    @RolesAllowed({Role.ADMINISTRATOR_NAME})
     public User createManagerUser(
             @NotBlank String email,
             @NotBlank String plainPassword,
             @NotBlank String firstName,
             String lastName) {
         return createUser(email, plainPassword, Role.MANAGER, firstName, lastName);
+    }
+
+    public User updateUser(User user, User userTemplate, Optional<String> maybePlainPassword) {
+        user.prepareForUpdate(userTemplate);
+        maybePlainPassword.ifPresent(plainPassword -> 
+            user.setPassword(User.validateAndEncryptPlainPassword(plainPassword))
+        );
+        return userDao.update(user);
     }
 
 }
