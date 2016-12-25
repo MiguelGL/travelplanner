@@ -64,8 +64,9 @@ public class UserResourceIT extends BaseAdminResourceIT {
         logout(auxSessionFilter);
 
         given()
+                .filter(sessionFilter)
                 .accept(ContentType.JSON)
-                .queryParam("userId", userJson.getLong("id"))
+                .pathParam("userId", userJson.getLong("id"))
         .when()
                 .delete("/sec/users/{userId}")
         .then()
@@ -73,8 +74,9 @@ public class UserResourceIT extends BaseAdminResourceIT {
                 .contentType(ContentType.JSON);
 
         given()
+                .filter(sessionFilter)
                 .accept(ContentType.JSON)
-                .queryParam("userId", userJson.getLong("id"))
+                .pathParam("userId", userJson.getLong("id"))
         .when()
                 .delete("/sec/users/{userId}")
         .then()
