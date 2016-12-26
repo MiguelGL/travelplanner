@@ -17,9 +17,11 @@ import com.mgl.demo.travelplanner.entity.Trip;
 import com.mgl.demo.travelplanner.rest.UserTripsResource.TripCreateRequest;
 import com.mgl.demo.travelplanner.service.DestinationService;
 import com.mgl.demo.travelplanner.service.TripService;
+import org.jboss.resteasy.annotations.cache.NoCache;
 
 @Path("/sec/trips/{tripId}")
 @Stateless
+@NoCache
 @RolesAllowed({Role.ADMINISTRATOR_NAME, Role.REGULAR_USER_NAME})
 public class TripResource {
 

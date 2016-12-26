@@ -43,9 +43,11 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.ToString;
 import org.hibernate.validator.constraints.NotBlank;
+import org.jboss.resteasy.annotations.cache.NoCache;
 
 @Stateless
 @Path("/sec/users/{userId}/trips")
+@NoCache
 @RolesAllowed({Role.REGULAR_USER_NAME, Role.ADMINISTRATOR_NAME})
 public class UserTripsResource {
 

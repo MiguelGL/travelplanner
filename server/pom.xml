@@ -115,6 +115,11 @@
             <artifactId>jboss-annotations-api_1.2_spec</artifactId>
             <scope>provided</scope>
         </dependency>
+        <dependency>
+            <groupId>org.jboss.resteasy</groupId>
+            <artifactId>resteasy-jaxrs</artifactId>
+            <scope>provided</scope>
+        </dependency>
         <!-- END: WildFly BOM dependencies -->
         <!-- BEGIN: not in wildfly pom -->
         <dependency>

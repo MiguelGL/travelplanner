@@ -33,9 +33,11 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.ToString;
+import org.jboss.resteasy.annotations.cache.NoCache;
 
 @Stateless
 @Path("/sec/users")
+@NoCache
 @RolesAllowed({Role.ADMINISTRATOR_NAME, Role.MANAGER_NAME})
 public class UsersResource {
 

@@ -24,8 +24,10 @@ import com.mgl.demo.travelplanner.dao.UserDao;
 import com.mgl.demo.travelplanner.entity.User;
 import com.mgl.demo.travelplanner.service.UserService;
 import lombok.extern.slf4j.Slf4j;
+import org.jboss.resteasy.annotations.cache.NoCache;
 
 @Path("/login")
+@NoCache
 @Stateless
 @Slf4j
 public class LoginResource {

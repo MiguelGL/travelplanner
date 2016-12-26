@@ -16,9 +16,11 @@ import com.mgl.demo.travelplanner.entity.Role;
 import com.mgl.demo.travelplanner.entity.User;
 import com.mgl.demo.travelplanner.rest.UsersResource.UserCreateRequest;
 import com.mgl.demo.travelplanner.service.UserService;
+import org.jboss.resteasy.annotations.cache.NoCache;
 
 @Path("/sec/users/{userId}")
 @Stateless
+@NoCache
 @RolesAllowed({Role.ADMINISTRATOR_NAME, Role.MANAGER_NAME})
 public class UserResource {
 
