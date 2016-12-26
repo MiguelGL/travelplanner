@@ -3,6 +3,7 @@ import { Http, URLSearchParams, Headers } from '@angular/http';
 import { Observable } from 'rxjs';
 import 'rxjs/add/operator/map'
 import { User } from './user';
+import { Trip } from './trip';
 
 @Injectable()
 export class TravelplannerApiClientService {
@@ -61,6 +62,31 @@ export class TravelplannerApiClientService {
           throw response;
         }
       })
+  }
+
+  loadCurrentUserTrips(offset: number, limit: number): Observable<Trip[]> {
+    const search = new URLSearchParams()
+    search.set("offset", `${offset}`);
+    search.set("limit", `${limit}`);
+
+    return this.http.get(`/travelplanner/api/sec/users/${this.loggedInUser.id}/trips`, {search})
+      .map(response => {
+        if (response.status === 200) {
+          return response.json().map(apiTrip => {
+            return {
+              id: apiTrip.id,
+              updated: new Date(apiTrip.updated),
+              startDate: new Date(apiTrip.startDate),
+              endDate: new Date(apiTrip.endDate),
+              destination: apiTrip.destinationName,
+              comment: apiTrip.comment || '',
+              daysToStart: 0
+            };
+          });
+        } else {
+          throw response;
+        }
+      });
   }
 
 }

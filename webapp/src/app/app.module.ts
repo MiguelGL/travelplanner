@@ -16,6 +16,7 @@ import { MyTripsComponent } from './my-trips/my-trips.component';
 import { MessagesModule } from 'primeng/components/messages/messages';
 import { GrowlModule } from 'primeng/components/growl/growl';
 import { GlobalMessagesModule } from './shared/global-messages-service/global-messages.module';
+import { DataTableModule } from 'primeng/components/datatable/datatable';
 
 @NgModule({
   declarations: [
@@ -41,6 +42,7 @@ import { GlobalMessagesModule } from './shared/global-messages-service/global-me
     ButtonModule,
     MessagesModule,
     GrowlModule,
+    DataTableModule,
 
     // project
     AppRoutingModule,

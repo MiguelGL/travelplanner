@@ -1,1 +1,8 @@
-<p>My Trips</p>
+<p-dataTable [value]="trips" [lazy]="true" [rows]="10" [paginator]="true"
+             (onLazyLoad)="loadTripsLazy($event)">
+  <header>List of Trips</header>
+  <p-column field="startDate" header="Start"></p-column>
+  <p-column field="endDate" header="End"></p-column>
+  <p-column field="destination" header="Destination"></p-column>
+  <p-column field="daysToStart" header="Days to Start"></p-column>
+</p-dataTable>
