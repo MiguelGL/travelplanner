@@ -4,6 +4,7 @@ import { Observable } from 'rxjs';
 import 'rxjs/add/operator/map'
 import { User } from './user';
 import { Trip } from './trip';
+import * as moment from 'moment';
 
 @Injectable()
 export class TravelplannerApiClientService {
@@ -72,15 +73,18 @@ export class TravelplannerApiClientService {
     return this.http.get(`/travelplanner/api/sec/users/${this.loggedInUser.id}/trips`, {search})
       .map(response => {
         if (response.status === 200) {
+          const now = new Date();
           return response.json().map(apiTrip => {
+            const startDate = new Date(apiTrip.startDate);
+            const endDate = new Date(apiTrip.endDate);
             return {
               id: apiTrip.id,
-              updated: new Date(apiTrip.updated),
-              startDate: new Date(apiTrip.startDate),
-              endDate: new Date(apiTrip.endDate),
+              updated: moment(new Date(apiTrip.updated)),
+              startDate: moment(startDate),
+              endDate: moment(endDate),
               destination: apiTrip.destinationName,
               comment: apiTrip.comment || '',
-              daysToStart: 0
+              daysToStart: moment.duration(now.getMilliseconds() - startDate.getMilliseconds())
             };
           });
         } else {
