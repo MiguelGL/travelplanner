@@ -42,6 +42,7 @@ public class TripsResourceIT extends BaseAdminResourceIT {
                 .statusCode(Status.OK.getStatusCode())
                 .contentType(ContentType.JSON)
                 .body("userEmail", is(jsonUser.getString("email")))
+                .body("userId", anyOf(is(jsonUser.getLong("id")), is(jsonUser.getInt("id"))))
                 .body("destinationName", is(auxSupport.getTestId() + "-dst-1"))
                 .body("startDate", is(toEpochMillis(startDate)))
                 .body("endDate", is(toEpochMillis(endDate)))

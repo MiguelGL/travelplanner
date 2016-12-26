@@ -161,6 +161,11 @@ public class Trip extends BaseEntity<Long> {
     }
 
     @XmlElement
+    Long getUserId() {
+        return getUser().getId();
+    }
+
+    @XmlElement
     String getDestinationName() {
         return getDestination().getName();
     }
