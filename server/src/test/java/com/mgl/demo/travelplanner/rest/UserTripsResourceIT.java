@@ -116,10 +116,14 @@ public class UserTripsResourceIT extends BaseResourceIT {
                 .body("$", empty());
     }
 
+    private long toEpochMillis(LocalDate localDate) {
+        return localDate.atStartOfDay().toInstant(ZoneOffset.UTC).toEpochMilli();
+    }
+
     @Test
     public void testCreateUserTrips() {
-        long startTs = LocalDate.now().atStartOfDay().toInstant(ZoneOffset.UTC).toEpochMilli();
-        long endTs = LocalDate.now().atStartOfDay().toInstant(ZoneOffset.UTC).toEpochMilli();
+        LocalDate startDate = LocalDate.now();
+        LocalDate endDate = startDate.plusDays(4);
 
         given()
                 .filter(sessionFilter)
@@ -128,8 +132,8 @@ public class UserTripsResourceIT extends BaseResourceIT {
                 .pathParam("userId", jsonUser.getLong("id"))
                 .body(ImmutableMap.of(
                         "destinationName", support.getTestId() + "-dst-1",
-                        "startDate", startTs,
-                        "endDate", endTs,
+                        "startDate", toEpochMillis(startDate),
+                        "endDate", toEpochMillis(endDate),
                         "comment", "Have a nice test trip"
                 ))
         .when()
@@ -139,8 +143,8 @@ public class UserTripsResourceIT extends BaseResourceIT {
                 .contentType(ContentType.JSON)
                 .body("userEmail", is(jsonUser.getString("email")))
                 .body("destinationName", is(support.getTestId() + "-dst-1"))
-                .body("startDate", is(startTs))
-                .body("startDate", is(endTs))
+                .body("startDate", is(toEpochMillis(startDate)))
+                .body("endDate", is(toEpochMillis(endDate)))
                 .body("comment", is("Have a nice test trip"));
 
         given()
@@ -150,14 +154,100 @@ public class UserTripsResourceIT extends BaseResourceIT {
                 .pathParam("userId", jsonUser.getLong("id"))
                 .body(ImmutableMap.of(
                         "destinationName", support.getTestId() + "-dst-2",
-                        "startDate", startTs,
-                        "endDate", endTs,
+                        "startDate", toEpochMillis(startDate),
+                        "endDate", toEpochMillis(endDate),
                         "comment", "Have a nice test trip again"
                 ))
         .when()
                 .post("/sec/users/{userId}/trips")
         .then()
                 .statusCode(Status.CONFLICT.getStatusCode());
+
+        given()
+                .filter(sessionFilter)
+                .accept(ContentType.JSON)
+                .contentType(ContentType.JSON)
+                .pathParam("userId", jsonUser.getLong("id"))
+                .body(ImmutableMap.of(
+                        "destinationName", support.getTestId() + "-dst-3",
+                        "startDate", toEpochMillis(startDate.minusDays(14)),
+                        "endDate", toEpochMillis(startDate.plusDays(1)),
+                        "comment", "Have a nice test trip again"
+                ))
+        .when()
+                .post("/sec/users/{userId}/trips")
+        .then()
+                .statusCode(Status.CONFLICT.getStatusCode());
+
+        given()
+                .filter(sessionFilter)
+                .accept(ContentType.JSON)
+                .contentType(ContentType.JSON)
+                .pathParam("userId", jsonUser.getLong("id"))
+                .body(ImmutableMap.of(
+                        "destinationName", support.getTestId() + "-dst-4",
+                        "startDate", toEpochMillis(endDate.minusDays(1)),
+                        "endDate", toEpochMillis(endDate.plusDays(5)),
+                        "comment", "Have a nice test trip again"
+                ))
+        .when()
+                .post("/sec/users/{userId}/trips")
+        .then()
+                .statusCode(Status.CONFLICT.getStatusCode());
+
+        given()
+                .filter(sessionFilter)
+                .accept(ContentType.JSON)
+                .contentType(ContentType.JSON)
+                .pathParam("userId", jsonUser.getLong("id"))
+                .body(ImmutableMap.of(
+                        "destinationName", support.getTestId() + "-dst-4",
+                        "startDate", toEpochMillis(startDate.plusDays(1)),
+                        "endDate", toEpochMillis(endDate.minusDays(1)),
+                        "comment", "Have a nice test trip again"
+                ))
+        .when()
+                .post("/sec/users/{userId}/trips")
+        .then()
+                .statusCode(Status.CONFLICT.getStatusCode());
+
+        given()
+                .filter(sessionFilter)
+                .accept(ContentType.JSON)
+                .contentType(ContentType.JSON)
+                .pathParam("userId", jsonUser.getLong("id"))
+                .body(ImmutableMap.of(
+                        "destinationName", support.getTestId() + "-dst-4",
+                        "startDate", toEpochMillis(startDate.minusDays(1)),
+                        "endDate", toEpochMillis(endDate.plusDays(1)),
+                        "comment", "Have a nice test trip again"
+                ))
+        .when()
+                .post("/sec/users/{userId}/trips")
+        .then()
+                .statusCode(Status.CONFLICT.getStatusCode());
+
+        given()
+                .filter(sessionFilter)
+                .accept(ContentType.JSON)
+                .contentType(ContentType.JSON)
+                .pathParam("userId", jsonUser.getLong("id"))
+                .body(ImmutableMap.of(
+                        "destinationName", support.getTestId() + "-dst-1",
+                        "startDate", toEpochMillis(startDate.plusMonths(1)),
+                        "endDate", toEpochMillis(endDate.plusMonths(1)),
+                        "comment", "Have a nice test trip"
+                ))
+        .when()
+                .post("/sec/users/{userId}/trips")
+        .then()
+                .statusCode(Status.OK.getStatusCode())
+                .contentType(ContentType.JSON)
+                .body("userEmail", is(jsonUser.getString("email")))
+                .body("destinationName", is(support.getTestId() + "-dst-1"))
+                .body("startDate", is(toEpochMillis(startDate.plusMonths(1))))
+                .body("endDate", is(toEpochMillis(endDate.plusMonths(1))))
+                .body("comment", is("Have a nice test trip"));
 
         given()
                 .filter(sessionFilter)

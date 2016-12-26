@@ -79,6 +79,10 @@ public class TripDao extends BaseEntityDao<Long, Trip, QTrip> {
                 .and(
                         pathBase().startDate.between(startDate, endDate)
                         .or(pathBase().endDate.between(startDate, endDate))
+                        .or(pathBase().startDate.eq(startDate).or(pathBase().startDate.before(startDate))
+                            .and(pathBase().endDate.eq(endDate).or(pathBase().endDate.after(endDate))))
+                        .or(pathBase().startDate.eq(startDate).or(pathBase().startDate.after(startDate))
+                            .and(pathBase().endDate.eq(endDate).or(pathBase().endDate.before(endDate))))
                 ));
     }
 
