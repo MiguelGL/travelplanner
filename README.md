@@ -22,10 +22,13 @@ TODO: mention wildfly ports: 8080, 9990
   - wget.
   - unzip.
 - Apache Maven >= 3.3.0.
-
+- Node >= 4, NPM >= 3.
+- Yarn (https://yarnpkg.com/en/docs/install).
 
 ## Preparing, Compiling & Deploying
 
 TODO: special mention to posgres auth setting.
 
 TODO: write.
+
+TODO: yarn global add angular-cli
