@@ -48,4 +48,4 @@ A non-exclusive list of subjects is included next.
 - For configuration simplicity, the passwords are stored as the Base64 encoding of a SHA-256 hash. But for stronger security storing passwords using BCrypt is advisable. 
 - There is no functionality for users to recover their passwords in case they forgot.
 - There is no way to validate email addresses users enter are indeed valid (real). An additional step to email these addresses a confirmation link or similar would be a nice improvement.
-
+- Angular router deactivation guards could be used to prevent user from navigating away from pages where values have been entered and could therefore be lost.
