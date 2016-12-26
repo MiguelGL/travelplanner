@@ -85,6 +85,9 @@ public class User extends BaseEntity<Long> {
     private static final int PASSWORD_MIN_LEN = 44;
     private static final int PASSWORD_MAX_LEN = 44;
 
+    private static final int PLAIN_PASSWORD_MIN_LEN = 1;
+    private static final int PLAIN_PASSWORD_MAX_LEN = 48;
+
     private static final String PLAIN_VALID_PASSWORD_REGEX = "^[0-9a-zA-Z\\_\\-]+$";
     private static final Pattern PLAIN_VALID_PASSWORD_PATTERN = Pattern.compile(PLAIN_VALID_PASSWORD_REGEX);
 
@@ -175,7 +178,9 @@ public class User extends BaseEntity<Long> {
     }
 
     public static boolean isValidPlainPassword(String plainPassword) {
-        return PLAIN_VALID_PASSWORD_PATTERN.matcher(Strings.nullToEmpty(plainPassword)).matches();
+        return plainPassword.length() >= PLAIN_PASSWORD_MIN_LEN
+                && plainPassword.length() <= PLAIN_PASSWORD_MAX_LEN
+                && PLAIN_VALID_PASSWORD_PATTERN.matcher(Strings.nullToEmpty(plainPassword)).matches();
     }
 
     public static String validateAndEncryptPlainPassword(String plainPassword) {
