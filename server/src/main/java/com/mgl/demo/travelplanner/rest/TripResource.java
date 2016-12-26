@@ -1,7 +1,5 @@
 package com.mgl.demo.travelplanner.rest;
 
-
-
 import javax.annotation.security.RolesAllowed;
 import javax.ejb.Stateless;
 import javax.inject.Inject;
