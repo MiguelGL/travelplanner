@@ -1,1 +1,26 @@
-<p>Login</p>
+<form [formGroup]="loginForm" (ngSubmit)="submit(loginForm.value, loginForm.valid, loginForm)">
+  <p-messages [value]="errorMessages"></p-messages>
+  <div class="form-group">
+    <label for="emailInput">Email</label>
+    <input pInputText type="text" id="emailInput" class="form-control"
+           placeholder="Enter email" required
+           formControlName="email">
+    <div *ngIf="loginForm.controls.email.dirty && !loginForm.controls.email.valid"
+         class="ui-message ui-messages-error ui-corner-all">
+      <span *ngIf="loginForm.controls.email.errors?.required">Email is required</span>
+    </div>
+  </div>
+  <div class="form-group">
+    <label for="passwordInput">Password</label>
+    <input pInputText type="password" id="passwordInput" class="form-control"
+           placeholder="Enter password" required
+           formControlName="password">
+    <div *ngIf="loginForm.controls.password.dirty && !loginForm.controls.password.valid"
+         class="ui-message ui-messages-error ui-corner-all">
+      <span *ngIf="loginForm.controls.password.errors?.required">Password is required</span>
+    </div>
+  </div>
+  <button pButton type="submit" icon="fa-check" iconPos="left" label="Login"
+          [disabled]="!loginForm.valid"></button>
+  <a routerLink="/register">Create an account</a>
+</form>
