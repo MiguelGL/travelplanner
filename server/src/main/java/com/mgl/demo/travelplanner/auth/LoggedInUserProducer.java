@@ -1,4 +1,4 @@
-package com.mgl.demo.travelplanner;
+package com.mgl.demo.travelplanner.auth;
 
 import java.security.Principal;
 

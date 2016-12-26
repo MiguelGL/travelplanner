@@ -10,7 +10,7 @@ import com.mgl.demo.travelplanner.dao.support.BaseEntityDao;
 import com.mgl.demo.travelplanner.entity.QTrip;
 import com.mgl.demo.travelplanner.entity.Trip;
 import com.mgl.demo.travelplanner.entity.User;
-import com.mgl.demo.travelplanner.rest.Pagination.OrderBySpec;
+import com.mgl.demo.travelplanner.rest.support.Pagination.OrderBySpec;
 import com.querydsl.core.types.OrderSpecifier;
 import com.querydsl.core.types.dsl.ComparableExpressionBase;
 import lombok.RequiredArgsConstructor;

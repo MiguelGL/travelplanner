@@ -1,4 +1,4 @@
-package com.mgl.demo.travelplanner.rest;
+package com.mgl.demo.travelplanner.rest.support;
 
 import lombok.AccessLevel;
 import lombok.NoArgsConstructor;

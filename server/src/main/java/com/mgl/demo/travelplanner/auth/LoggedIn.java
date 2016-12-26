@@ -1,4 +1,4 @@
-package com.mgl.demo.travelplanner;
+package com.mgl.demo.travelplanner.auth;
 
 import static java.lang.annotation.ElementType.FIELD;
 import static java.lang.annotation.ElementType.METHOD;

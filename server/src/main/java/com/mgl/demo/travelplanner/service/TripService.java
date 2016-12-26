@@ -1,6 +1,6 @@
 package com.mgl.demo.travelplanner.service;
 
-import com.mgl.demo.travelplanner.LoggedIn;
+import com.mgl.demo.travelplanner.auth.LoggedIn;
 
 import java.time.LocalDate;
 

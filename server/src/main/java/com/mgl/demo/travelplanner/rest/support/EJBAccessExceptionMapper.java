@@ -1,4 +1,4 @@
-package com.mgl.demo.travelplanner.rest;
+package com.mgl.demo.travelplanner.rest.support;
 
 import javax.ejb.EJBAccessException;
 import javax.ws.rs.core.Response;

@@ -3,7 +3,7 @@ package com.mgl.demo.travelplanner.rest;
 import static com.mgl.demo.travelplanner.entity.Destination.DESTINATION_MAX_LEN;
 import static com.mgl.demo.travelplanner.entity.Destination.DESTINATION_MIX_LEN;
 import static com.mgl.demo.travelplanner.entity.Trip.COMMENT_MAX_LEN;
-import static com.mgl.demo.travelplanner.rest.Pagination.MAX_PAGINATED_RESULTS;
+import static com.mgl.demo.travelplanner.rest.support.Pagination.MAX_PAGINATED_RESULTS;
 
 import java.time.LocalDate;
 import java.util.List;
@@ -34,7 +34,7 @@ import com.mgl.demo.travelplanner.entity.Role;
 import com.mgl.demo.travelplanner.entity.Trip;
 import com.mgl.demo.travelplanner.entity.User;
 import com.mgl.demo.travelplanner.entity.support.LocalDateAdapter;
-import com.mgl.demo.travelplanner.rest.Pagination.OrderBySpec;
+import com.mgl.demo.travelplanner.rest.support.Pagination.OrderBySpec;
 import com.mgl.demo.travelplanner.service.TripService;
 import lombok.AccessLevel;
 import lombok.Getter;

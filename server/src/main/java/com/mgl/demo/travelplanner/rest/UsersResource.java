@@ -1,7 +1,7 @@
 package com.mgl.demo.travelplanner.rest;
 
-import static com.mgl.demo.travelplanner.rest.Pagination.MAX_PAGINATED_RESULTS;
-import static com.mgl.demo.travelplanner.rest.Pagination.boundLimit;
+import static com.mgl.demo.travelplanner.rest.support.Pagination.MAX_PAGINATED_RESULTS;
+import static com.mgl.demo.travelplanner.rest.support.Pagination.boundLimit;
 
 import java.util.List;
 
@@ -26,7 +26,7 @@ import com.mgl.demo.travelplanner.dao.UserDao;
 import com.mgl.demo.travelplanner.dao.UserDao.OrderByField;
 import com.mgl.demo.travelplanner.entity.Role;
 import com.mgl.demo.travelplanner.entity.User;
-import com.mgl.demo.travelplanner.rest.Pagination.OrderBySpec;
+import com.mgl.demo.travelplanner.rest.support.Pagination.OrderBySpec;
 import com.mgl.demo.travelplanner.service.UserService;
 import lombok.AccessLevel;
 import lombok.Getter;
