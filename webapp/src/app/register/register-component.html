@@ -1,2 +1,68 @@
-<p>Register</p>
-<a routerLink="/login">Login</a>
+<form [formGroup]="registerForm" (ngSubmit)="submit(registerForm.value, registerForm.valid, registerForm)">
+  <p-messages [value]="errorMessages"></p-messages>
+  <div class="form-group">
+    <label for="emailInput">Email</label>
+    <input pInputText type="text" id="emailInput" class="form-control"
+           placeholder="Enter your email" required
+           formControlName="email">
+    <div *ngIf="registerForm.controls.email.dirty && !registerForm.controls.email.valid"
+         class="ui-message ui-messages-error ui-corner-all">
+      <span *ngIf="registerForm.controls.email.errors?.required">Email is required</span>
+      <span *ngIf="registerForm.controls.email.errors?.minlength">Too short to be an email</span>
+      <span *ngIf="registerForm.controls.email.errors?.maxlength">Email is too long</span>
+      <span *ngIf="registerForm.controls.email.errors?.pattern">Invalid email format</span>
+    </div>
+  </div>
+  <div class="form-group">
+    <label for="firstNameInput">First Name</label>
+    <input pInputText type="text" id="firstNameInput" class="form-control"
+           placeholder="Enter your first name" required
+           formControlName="firstName">
+    <div *ngIf="registerForm.controls.firstName.dirty && !registerForm.controls.firstName.valid"
+         class="ui-message ui-messages-error ui-corner-all">
+      <span *ngIf="registerForm.controls.firstName.errors?.required">First Name is required</span>
+      <span *ngIf="registerForm.controls.firstName.errors?.minlength">Too short</span>
+      <span *ngIf="registerForm.controls.firstName.errors?.maxlength">Too long</span>
+    </div>
+  </div>
+  <div class="form-group">
+    <label for="lastNameInput">Last Name (optional)</label>
+    <input pInputText type="text" id="lastNameInput" class="form-control"
+           placeholder="Enter your last name (optional)"
+           formControlName="lastName">
+    <div *ngIf="registerForm.controls.lastName.dirty && !registerForm.controls.lastName.valid"
+         class="ui-message ui-messages-error ui-corner-all">
+      <span *ngIf="registerForm.controls.lastName.errors?.maxlength">Too long</span>
+    </div>
+  </div>
+  <div class="form-group">
+    <label for="passwordInput">Password</label>
+    <input pInputText type="password" id="passwordInput" class="form-control"
+           placeholder="Select a password" required
+           formControlName="password">
+    <div *ngIf="registerForm.controls.password.dirty && !registerForm.controls.password.valid"
+         class="ui-message ui-messages-error ui-corner-all">
+      <span *ngIf="registerForm.controls.password.errors?.required">Password is required</span>
+      <span *ngIf="registerForm.controls.password.errors?.minlength">Too short</span>
+      <span *ngIf="registerForm.controls.password.errors?.maxlength">Too long</span>
+      <span *ngIf="registerForm.controls.password.errors?.pattern">Alphanumeric, '-' and '_' only</span>
+    </div>
+  </div>
+  <div class="form-group">
+    <label for="confirmedPasswordInput">Confirm Password</label>
+    <input pInputText type="password" id="confirmedPasswordInput" class="form-control"
+           placeholder="Confirm your password" required
+           formControlName="confirmedPassword">
+    <div *ngIf="registerForm.controls.confirmedPassword.dirty && !registerForm.controls.confirmedPassword.valid"
+         class="ui-message ui-messages-error ui-corner-all">
+      <span *ngIf="registerForm.controls.confirmedPassword.errors?.required">Confirmed Password is required</span>
+      <span *ngIf="registerForm.controls.confirmedPassword.errors?.minlength">Too short</span>
+      <span *ngIf="registerForm.controls.confirmedPassword.errors?.maxlength">Too long</span>
+      <span *ngIf="registerForm.controls.confirmedPassword.errors?.pattern">Alphanumeric, '-' and '_' only</span>
+      <span *ngIf="registerForm.controls.confirmedPassword.errors?.passwordsmismatch">Confirmed password does not match</span>
+    </div>
+  </div>
+  <button pButton type="submit" icon="fa-check" iconPos="left" label="Register"
+          [disabled]="!registerForm.valid"></button>
+  <a routerLink="/login">Login with an existing account</a>
+</form>
