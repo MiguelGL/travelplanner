@@ -1,10 +1,12 @@
 package com.mgl.demo.travelplanner.entity;
 
+import static com.google.common.base.MoreObjects.firstNonNull;
 import static org.hibernate.id.enhanced.SequenceStyleGenerator.INCREMENT_PARAM;
 import static org.hibernate.id.enhanced.SequenceStyleGenerator.SEQUENCE_PARAM;
 
 import java.time.LocalDate;
 import java.util.Objects;
+import java.util.Set;
 
 import javax.annotation.Nullable;
 import javax.persistence.Column;
@@ -27,6 +29,7 @@ import javax.xml.bind.annotation.XmlTransient;
 import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
 
 import com.google.common.base.MoreObjects;
+import com.google.common.collect.ImmutableSet;
 import com.mgl.demo.travelplanner.entity.support.BaseEntity;
 import com.mgl.demo.travelplanner.entity.support.LocalDateAdapter;
 import lombok.AccessLevel;
@@ -117,6 +120,20 @@ public class Trip extends BaseEntity<Long> {
         this(user, destination, startDate, endDate, NO_COMMENT);
     }
 
+    public Trip newWithNullables(
+            Destination destination,
+            LocalDate startDate,
+            LocalDate endDate,
+            String comment) {
+        Trip trip = new Trip();
+        trip.setUser(getUser());
+        trip.setDestination(destination);
+        trip.setStartDate(startDate);
+        trip.setEndDate(endDate);
+        trip.setComment(comment);
+        return trip;
+    }
+
     public boolean hasComment() {
         return NO_COMMENT.equals(getComment());
     }
@@ -129,9 +146,13 @@ public class Trip extends BaseEntity<Long> {
         }
     }
 
+    public void validateDates() {
+        validateDates(getStartDate(), getEndDate());
+    }
+
     @PrePersist @PreUpdate
     public void prePersist() {
-        validateDates(getStartDate(), getEndDate());
+        validateDates();
     }
 
     @XmlElement
@@ -146,6 +167,32 @@ public class Trip extends BaseEntity<Long> {
 
     public static String ensureComment(@Nullable String comment) {
         return MoreObjects.firstNonNull(comment, NO_COMMENT);
+    }
+
+    public boolean isForUser(User forUser) {
+        return getUser().equals(forUser);
+    }
+
+    public void prepareForUpdate(Trip tripTemplate) {
+        super.prepareForUpdate(tripTemplate);
+        // user: not updatable
+        setDestination(firstNonNull(tripTemplate.getDestination(), getDestination()));
+        setStartDate(firstNonNull(tripTemplate.getStartDate(), getStartDate()));
+        setEndDate(firstNonNull(tripTemplate.getEndDate(), getEndDate()));
+        setComment(firstNonNull(tripTemplate.getComment(), getComment()));
+    }
+
+    @FunctionalInterface
+    public static interface OverlappingTripsChecker {
+        boolean checkOverlappingTrips(
+                User user,
+                LocalDate startDate, LocalDate endDate,
+                Set<Trip> excludedTrips);
+    }
+
+    public boolean checkOverlappingTripsForUpdate(OverlappingTripsChecker checker) {
+        return checker.checkOverlappingTrips(
+                getUser(), getStartDate(), getEndDate(), ImmutableSet.of(this));
     }
 
 }

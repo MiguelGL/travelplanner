@@ -1,11 +1,12 @@
 package com.mgl.demo.travelplanner.dao;
 
-import static com.mgl.demo.travelplanner.entity.QUser.user;
 
 import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
+import java.util.Set;
 
+import com.google.common.collect.ImmutableSet;
 import com.mgl.demo.travelplanner.dao.support.BaseEntityDao;
 import com.mgl.demo.travelplanner.entity.QTrip;
 import com.mgl.demo.travelplanner.entity.Trip;
@@ -74,8 +75,15 @@ public class TripDao extends BaseEntityDao<Long, Trip, QTrip> {
 
     public boolean existsOverlappingUserTrip(User user,
             LocalDate startDate, LocalDate endDate) {
+        return existsOverlappingUserTrip(user, startDate, endDate, ImmutableSet.of());
+    }
+
+    public boolean existsOverlappingUserTrip(User user,
+            LocalDate startDate, LocalDate endDate,
+            Set<Trip> excludedTrips) {
         return existsAccordingTo(
                 pathBase().user.eq(user)
+                .and(pathBase().notIn(excludedTrips))
                 .and(
                         pathBase().startDate.between(startDate, endDate)
                         .or(pathBase().endDate.between(startDate, endDate))

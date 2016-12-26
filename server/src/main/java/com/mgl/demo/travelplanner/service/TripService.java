@@ -33,6 +33,15 @@ public class TripService {
         }
     }
 
+    @TransactionAttribute(TransactionAttributeType.NOT_SUPPORTED)
+    public Trip validateUserTripAccess(Trip trip) {
+        if (!loggedInUser.hasAllUserTripsAccess()
+                && !trip.isForUser(loggedInUser)) {
+            throw new UnauthorizedUserAccessException();
+        }
+        return trip;
+    }
+
     public Trip createTrip(User user, String destinationName,
             LocalDate startDate, LocalDate endDate,
             String comment) {
@@ -45,6 +54,16 @@ public class TripService {
         Trip trip = new Trip(user, destination, startDate, endDate, comment);
         tripDao.create(trip);
         return trip;
+    }
+
+    public Trip updateTrip(Trip trip, Trip tripTemplate) {
+        validateUserTripAccess(trip);
+        trip.prepareForUpdate(tripTemplate);
+        trip.validateDates();
+        if (trip.checkOverlappingTripsForUpdate(tripDao::existsOverlappingUserTrip)) {
+            throw new ConflictingValuesException();
+        }
+        return tripDao.update(trip);
     }
 
 }

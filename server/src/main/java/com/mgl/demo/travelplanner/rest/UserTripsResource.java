@@ -7,6 +7,7 @@ import static com.mgl.demo.travelplanner.rest.support.Pagination.MAX_PAGINATED_R
 
 import java.time.LocalDate;
 import java.util.List;
+import java.util.Optional;
 
 import javax.annotation.security.RolesAllowed;
 import javax.ejb.Stateless;
@@ -76,6 +77,10 @@ public class UserTripsResource {
 
         @Size(max = COMMENT_MAX_LEN)
         private String comment;
+
+        public Optional<String> maybeGetDestinationName() {
+            return Optional.ofNullable(getDestinationName());
+        }
 
     }
 

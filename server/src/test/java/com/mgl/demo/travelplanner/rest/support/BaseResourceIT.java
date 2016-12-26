@@ -7,6 +7,9 @@ import static org.hamcrest.Matchers.isA;
 import static org.hamcrest.Matchers.notNullValue;
 import static org.hamcrest.Matchers.nullValue;
 
+import java.time.LocalDate;
+import java.time.ZoneOffset;
+
 import javax.ws.rs.core.Response.Status;
 
 import com.google.common.base.Charsets;
@@ -14,6 +17,7 @@ import io.restassured.RestAssured;
 import io.restassured.config.SessionConfig;
 import io.restassured.filter.session.SessionFilter;
 import io.restassured.http.ContentType;
+import io.restassured.path.json.JsonPath;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.BeforeClass;
@@ -47,6 +51,33 @@ public abstract class BaseResourceIT {
     @After
     public void tearDown() {
         support = null;
+    }
+
+    protected long toEpochMillis(LocalDate localDate) {
+        return localDate.atStartOfDay().toInstant(ZoneOffset.UTC).toEpochMilli();
+    }
+
+    protected static JsonPath registerUser(IntegrationTestsSupport support) {
+        return given()
+                .contentType(ContentType.URLENC)
+                .formParam("email", support.email())
+                .formParam("password", support.password())
+                .formParam("firstName", support.firstName())
+                .formParam("lastName", "")
+                .accept(ContentType.JSON)
+        .when()
+                .post("/login/register")
+        .then()
+                .statusCode(Status.OK.getStatusCode())
+                .contentType(ContentType.JSON)
+                .body("id", isA(Number.class))
+                .body("updated", notNullValue())
+                .body("email", is(support.email()))
+                .body("password", nullValue())
+                .body("firstName", is(support.firstName()))
+                .body("lastName", is(""))
+        .extract()
+                .jsonPath();
     }
 
     protected static void logout(SessionFilter sessionFilter) {

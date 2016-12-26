@@ -25,29 +25,6 @@ public class UserTripsResourceIT extends BaseResourceIT {
     private JsonPath jsonUser;
     private SessionFilter sessionFilter;
 
-    private static JsonPath registerUser(IntegrationTestsSupport support) {
-        return given()
-                .contentType(ContentType.URLENC)
-                .formParam("email", support.email())
-                .formParam("password", support.password())
-                .formParam("firstName", support.firstName())
-                .formParam("lastName", "")
-                .accept(ContentType.JSON)
-        .when()
-                .post("/login/register")
-        .then()
-                .statusCode(Status.OK.getStatusCode())
-                .contentType(ContentType.JSON)
-                .body("id", isA(Number.class))
-                .body("updated", notNullValue())
-                .body("email", is(support.email()))
-                .body("password", nullValue())
-                .body("firstName", is(support.firstName()))
-                .body("lastName", is(""))
-        .extract()
-                .jsonPath();
-    }
-
     @Before
     @Override
     public void setUp() {
@@ -114,10 +91,6 @@ public class UserTripsResourceIT extends BaseResourceIT {
                 .statusCode(Status.OK.getStatusCode())
                 .contentType(ContentType.JSON)
                 .body("$", empty());
-    }
-
-    private long toEpochMillis(LocalDate localDate) {
-        return localDate.atStartOfDay().toInstant(ZoneOffset.UTC).toEpochMilli();
     }
 
     @Test
