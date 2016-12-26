@@ -52,4 +52,15 @@ export class TravelplannerApiClientService {
       });
   }
 
+  logout(): Observable<void> {
+    return this.http.delete('/travelplanner/api/login')
+      .map(response => {
+        if (response.status === 204) {
+          return;
+        } else {
+          throw response;
+        }
+      })
+  }
+
 }
