@@ -4,17 +4,33 @@ import { FormsModule } from '@angular/forms';
 import { HttpModule } from '@angular/http';
 
 import { AppComponent } from './app.component';
+import { AppRoutingModule } from './app-routing.module';
+import { RouteNotFoundComponent } from './route-not-found.component';
+import { TravelplannerApiClientModule } from './shared/travelplanner-api-client/travelplanner-api-client.module';
+import { LoginComponent } from './login/login-component';
+import { RegisterComponent } from './register/register-component';
+import { MomentModule } from 'angular2-moment';
 
 @NgModule({
   declarations: [
-    AppComponent
+    AppComponent,
+    RouteNotFoundComponent,
+    LoginComponent,
+    RegisterComponent
   ],
   imports: [
     BrowserModule,
     FormsModule,
-    HttpModule
+    HttpModule,
+
+    MomentModule,
+
+    AppRoutingModule,
+    TravelplannerApiClientModule
   ],
   providers: [],
-  bootstrap: [AppComponent]
+  bootstrap: [
+    AppComponent
+  ]
 })
 export class AppModule { }

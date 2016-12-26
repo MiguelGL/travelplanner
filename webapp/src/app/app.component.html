@@ -1,3 +1,18 @@
-<h1>
-  {{title}}
-</h1>
+<nav class="navbar navbar-default">
+  <div class="container-fluid">
+    <div class="navbar-header">
+      <a href="#" class="navbar-brand">
+        Travel Planner
+      </a>
+    </div>
+    <div class="navbar-right">
+      <p class="navbar-text">
+        Started: {{startTs | amCalendar}}
+      </p>
+    </div>
+  </div>
+</nav>
+
+<div class="container-fluid">
+  <router-outlet></router-outlet>
+</div>
