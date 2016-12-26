@@ -5,7 +5,9 @@ import static com.mgl.demo.travelplanner.entity.Destination.DESTINATION_MIX_LEN;
 import static com.mgl.demo.travelplanner.entity.Trip.COMMENT_MAX_LEN;
 import static com.mgl.demo.travelplanner.rest.support.Pagination.MAX_PAGINATED_RESULTS;
 
+import java.time.Instant;
 import java.time.LocalDate;
+import java.time.ZoneOffset;
 import java.util.List;
 import java.util.Optional;
 
@@ -86,16 +88,25 @@ public class UserTripsResource {
 
     }
 
+    public static LocalDate fromTs(long ts) {
+        return Instant.ofEpochMilli(ts).atZone(ZoneOffset.UTC).toLocalDate();
+    }
+
     @GET
     public GenericEntity<List<Trip>> getUserTrips(
             @PathParam("userId") Long userId,
+            @QueryParam("fromDateTs") Long fromDateTs,
+            @QueryParam("toDateTs") Long toDateTs,
             @QueryParam("orderBy") @DefaultValue(OrderByField.DEFAULT) OrderByField orderBy,
             @QueryParam("orderSpec") @DefaultValue(OrderBySpec.DEFAULT) OrderBySpec orderSpec,
             @QueryParam("offset") @DefaultValue("0") @Min(0) long offset,
             @QueryParam("limit") @DefaultValue("" + MAX_PAGINATED_RESULTS) @Min(0) long limit) {
         User user = userDao.findById(userId);
         tripService.validateUserTripAccess(user);
-        List<Trip> trips = tripDao.findUserTrips(user, orderBy, orderSpec, offset, limit);
+        Optional<LocalDate> maybeFromDate = Optional.ofNullable(fromDateTs).map(UserTripsResource::fromTs);
+        Optional<LocalDate> maybeToDate = Optional.ofNullable(toDateTs).map(UserTripsResource::fromTs);
+        List<Trip> trips = tripDao.findUserTrips(
+                user, maybeFromDate, maybeToDate, orderBy, orderSpec, offset, limit);
         return new GenericEntity<List<Trip>>(trips) {};
     }
 

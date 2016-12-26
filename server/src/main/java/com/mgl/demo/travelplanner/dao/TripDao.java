@@ -1,6 +1,5 @@
 package com.mgl.demo.travelplanner.dao;
 
-
 import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
@@ -13,6 +12,7 @@ import com.mgl.demo.travelplanner.entity.Trip;
 import com.mgl.demo.travelplanner.entity.User;
 import com.mgl.demo.travelplanner.rest.support.Pagination.OrderBySpec;
 import com.querydsl.core.types.OrderSpecifier;
+import com.querydsl.core.types.dsl.BooleanExpression;
 import com.querydsl.core.types.dsl.ComparableExpressionBase;
 import lombok.RequiredArgsConstructor;
 
@@ -55,22 +55,44 @@ public class TripDao extends BaseEntityDao<Long, Trip, QTrip> {
     }
 
     public List<Trip> findUserTrips(User user,
+            Optional<LocalDate> maybeFromDate, Optional<LocalDate> maybeToDate,
             OrderByField orderByField, OrderBySpec orderBySpec,
             long offset, long limit) {
+        BooleanExpression predicate = pathBase().user.eq(user);
+        predicate = predicate.and(
+                maybeFromDate.map(fromDate -> pathBase().startDate.before(fromDate).not())
+                .orElse(null));
+        predicate = predicate.and(
+                maybeToDate.map(toDate -> pathBase().endDate.after(toDate).not())
+                .orElse(null));
         return find(
                 Optional.of(offset),
                 Optional.of(limit),
                 orderByField.maybeBuildOrderSpecifier(orderBySpec),
-                pathBase().user.eq(user));
+                predicate);
     }
 
-    public List<Trip> findAllTrips(User user,
+    public List<Trip> findAllTrips(
+            Optional<LocalDate> maybeFromDate, Optional<LocalDate> maybeToDate,
             OrderByField orderByField, OrderBySpec orderBySpec,
             long offset, long limit) {
-        return find(
-                Optional.of(offset),
-                Optional.of(limit),
-                orderByField.maybeBuildOrderSpecifier(orderBySpec));
+        Optional<BooleanExpression> maybeFromPredicate =
+                maybeFromDate.map(fromDate -> pathBase().startDate.before(fromDate).not());
+
+        Optional<BooleanExpression> maybeFullPredicate = maybeToDate
+                .map(toDate -> pathBase().endDate.after(toDate).not())
+                .flatMap(p2 -> maybeFromPredicate.map(p1 -> p1.and(p2)));
+
+        return maybeFullPredicate
+                .map(predicate -> find(
+                    Optional.of(offset),
+                    Optional.of(limit),
+                    orderByField.maybeBuildOrderSpecifier(orderBySpec),
+                    predicate))
+                .orElseGet(() -> find(
+                    Optional.of(offset),
+                    Optional.of(limit),
+                    orderByField.maybeBuildOrderSpecifier(orderBySpec)));
     }
 
     public boolean existsOverlappingUserTrip(User user,
