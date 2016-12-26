@@ -2,7 +2,6 @@ import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { HttpModule } from '@angular/http';
-
 import { AppComponent } from './app.component';
 import { AppRoutingModule } from './app-routing.module';
 import { RouteNotFoundComponent } from './route-not-found.component';
@@ -15,6 +14,8 @@ import { SharedModule } from 'primeng/components/common/shared';
 import { ButtonModule } from 'primeng/components/button/button';
 import { MyTripsComponent } from './my-trips/my-trips.component';
 import { MessagesModule } from 'primeng/components/messages/messages';
+import { GrowlModule } from 'primeng/components/growl/growl';
+import { GlobalMessagesModule } from './shared/global-messages-service/global-messages.module';
 
 @NgModule({
   declarations: [
@@ -39,10 +40,12 @@ import { MessagesModule } from 'primeng/components/messages/messages';
     InputTextModule,
     ButtonModule,
     MessagesModule,
+    GrowlModule,
 
     // project
     AppRoutingModule,
-    TravelplannerApiClientModule
+    TravelplannerApiClientModule,
+    GlobalMessagesModule
   ],
   providers: [],
   bootstrap: [

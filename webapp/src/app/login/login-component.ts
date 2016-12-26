@@ -4,6 +4,7 @@ import { TravelplannerApiClientService } from '../shared/travelplanner-api-clien
 import { Router } from '@angular/router';
 import { Message } from 'primeng/components/common/api';
 import { Response } from '@angular/http';
+import { GlobalMessagesService } from '../shared/global-messages-service/global-messages.service';
 
 @Component({
   templateUrl: './login-component.html'
@@ -16,7 +17,8 @@ export class LoginComponent implements OnInit {
 
   constructor(private formBuilder: FormBuilder,
               private apiClient: TravelplannerApiClientService,
-              private router: Router) {}
+              private router: Router,
+              private messagesService: GlobalMessagesService) {}
 
   ngOnInit() {
     this.loginForm = this.formBuilder.group({
@@ -33,6 +35,10 @@ export class LoginComponent implements OnInit {
     if (!valid) return;
     this.apiClient.login(value.email, value.password)
       .subscribe((user) => {
+        this.messagesService.display({
+          severity: 'success', summary: 'Registration OK',
+          detail: 'Registration successful'
+        })
         this.router.navigateByUrl('/my-trips');
       }, (error) => {
         if (error instanceof Response) {
