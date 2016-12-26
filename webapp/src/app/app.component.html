@@ -5,11 +5,11 @@
         Travel Planner
       </a>
     </div>
-    <div class="navbar-right">
-      <p class="navbar-text">
-        Started: {{startTs | amCalendar}}
-      </p>
-    </div>
+    <ul class="nav navbar-nav navbar-right" (click)="$event.preventDefault()">
+      <li dropdown (onToggle)="toggled($event)">
+        <a href (click)="logout()"><span class="glyphicon glyphicon-log-out"></span> Logout</a>
+      </li>
+    </ul>
   </div>
 </nav>
 

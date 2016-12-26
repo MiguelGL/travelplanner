@@ -36,7 +36,7 @@ export class LoginComponent implements OnInit {
     this.apiClient.login(value.email, value.password)
       .subscribe((user) => {
         this.messagesService.display({
-          severity: 'success', summary: 'Registration OK',
+          severity: 'success', summary: 'Login OK',
           detail: 'Registration successful'
         })
         this.router.navigateByUrl('/my-trips');
