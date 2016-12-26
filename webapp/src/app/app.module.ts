@@ -17,6 +17,9 @@ import { MessagesModule } from 'primeng/components/messages/messages';
 import { GrowlModule } from 'primeng/components/growl/growl';
 import { GlobalMessagesModule } from './shared/global-messages-service/global-messages.module';
 import { DataTableModule } from 'primeng/components/datatable/datatable';
+import { CreateTripComponent } from './my-trips/create-trip.component';
+import { LoggedInRouterGuard } from './login/logged-in-router-guard';
+import { NotLoggedInRouterGuard } from './login/not-logged-in-router-guard';
 
 @NgModule({
   declarations: [
@@ -24,7 +27,8 @@ import { DataTableModule } from 'primeng/components/datatable/datatable';
     RouteNotFoundComponent,
     LoginComponent,
     RegisterComponent,
-    MyTripsComponent
+    MyTripsComponent,
+    CreateTripComponent
   ],
   imports: [
     // angular
@@ -49,7 +53,9 @@ import { DataTableModule } from 'primeng/components/datatable/datatable';
     TravelplannerApiClientModule,
     GlobalMessagesModule
   ],
-  providers: [],
+  providers: [
+    LoggedInRouterGuard, NotLoggedInRouterGuard
+  ],
   bootstrap: [
     AppComponent
   ]

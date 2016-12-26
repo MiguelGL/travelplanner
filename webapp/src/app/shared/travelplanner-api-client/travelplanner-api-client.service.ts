@@ -1,7 +1,8 @@
 import { Injectable } from '@angular/core';
-import { Http, URLSearchParams, Headers } from '@angular/http';
+import { Http, URLSearchParams, Headers, Response } from '@angular/http';
 import { Observable } from 'rxjs';
 import 'rxjs/add/operator/map'
+import 'rxjs/add/operator/catch';
 import { User } from './user';
 import { Trip } from './trip';
 import * as moment from 'moment';
@@ -12,6 +13,38 @@ export class TravelplannerApiClientService {
   private loggedInUser: User;
 
   constructor(private http: Http) {}
+
+  get isLoggedIn() {
+    return !!this.loggedInUser;
+  }
+
+  checkLoggedIn(): Observable<boolean> {
+    return this.http.get('/travelplanner/api/login')
+      .map(response => {
+        switch (response.status) {
+          case 200:
+            const user = response.json() as User;
+            this.loggedInUser = user;
+            return true;
+          case 401:
+            this.loggedInUser = null;
+            return false;
+          default:
+            throw response;
+        }
+      })
+      .catch((err, observable) => {
+        if (err instanceof Response) {
+          if (err.status === 401) {
+            return Observable.of(false);
+          } else {
+            return Observable.throw(err);
+          }
+        } else {
+          return Observable.throw(err);
+        }
+      });
+  }
 
   register(email: string, password: string,
            firstName: string, lastName: string = ''): Observable<User> {
@@ -58,6 +91,7 @@ export class TravelplannerApiClientService {
     return this.http.delete('/travelplanner/api/login')
       .map(response => {
         if (response.status === 204) {
+          this.loggedInUser = null;
           return;
         } else {
           throw response;

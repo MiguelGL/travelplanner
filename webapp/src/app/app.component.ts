@@ -7,9 +7,7 @@ import { Router } from '@angular/router';
   selector: 'app-root',
   templateUrl: './app.component.html'
 })
-export class AppComponent implements OnInit {
-
-  private startTs: Date;
+export class AppComponent {
 
   constructor(private messagesService: GlobalMessagesService,
               private apiClient: TravelplannerApiClientService,
@@ -19,8 +17,8 @@ export class AppComponent implements OnInit {
     return this.messagesService.messages;
   }
 
-  ngOnInit(): void {
-    this.startTs = new Date();
+  get isLoggedIn() {
+    return this.apiClient.isLoggedIn;
   }
 
   logout() {
