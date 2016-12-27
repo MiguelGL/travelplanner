@@ -94,10 +94,10 @@ public class UsersResource {
             @QueryParam("orderSpec") @DefaultValue(OrderBySpec.DEFAULT) OrderBySpec orderSpec,
             @QueryParam("offset") @DefaultValue("0") @Min(0) long offset,
             @QueryParam("limit") @DefaultValue("" + MAX_PAGINATED_RESULTS) @Min(0) long limit) {
-        List<User> allUsers = userDao.findAll(orderBy, orderSpec, offset, boundLimit(limit));
+        List<User> allUsers = userDao.findAll(orderBy, orderSpec /*, offset, boundLimit(limit)*/);
         long usersCount = userDao.countAll();
         return Response.ok(new GenericEntity<List<User>>(allUsers) {})
-                .header(MAX_PAGINATED_RESULTS_HEADER, MAX_PAGINATED_RESULTS)
+//                .header(MAX_PAGINATED_RESULTS_HEADER, MAX_PAGINATED_RESULTS)
                 .header(AVAILABLE_RECORDS_COUNT_HEADER, usersCount)
                 .build();
     }

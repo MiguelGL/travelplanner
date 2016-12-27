@@ -72,6 +72,12 @@ public class UserDao extends BaseEntityDao<Long, User, QUser> {
         return find(Optional.of(offset), Optional.of(limit), maybeOrder);
     }
 
+    public List<User> findAll(OrderByField orderByField, OrderBySpec orderBySpec) {
+        Optional<OrderSpecifier<?>> maybeOrder = orderByField.maybeBuildOrderSpecifier(orderBySpec);
+
+        return find(Optional.empty(), Optional.empty(), maybeOrder);
+    }
+
     public long countAll() {
         return jpaQueryFactory().selectFrom(pathBase()).fetchCount();
     }

@@ -56,14 +56,15 @@ public class UsersResourceIT extends BaseAdminResourceIT {
                 .accept(ContentType.JSON)
                 .queryParam("orderBy", "FIRST_NAME")
                 .queryParam("orderSpec", "DESC")
-                .queryParam("offset", 2)
-                .queryParam("limit", 10)
+//                .queryParam("offset", 2)
+//                .queryParam("limit", 10)
         .when()
                 .get("/sec/users")
         .then()
                 .statusCode(Status.OK.getStatusCode())
                 .contentType(ContentType.JSON)
-                .header("X-Max-Page-Len", notNullValue())
+//                .header("X-Max-Page-Len", notNullValue())
+                .header("X-Max-Page-Len", nullValue())
                 .header("X-Available-Records-Count", notNullValue());
     }
 
