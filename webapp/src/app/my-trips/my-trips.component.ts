@@ -19,8 +19,12 @@ export class MyTripsComponent {
 
   loadTripsLazy(event: LazyLoadEvent) {
     console.log('event', event);
+    // These two sentences create a nasty flickering effect, but needed as a workaround for
+    // apparently several issues with PrimeNG lazy datatables.
+    //   https://github.com/primefaces/primeng/issues?utf8=%E2%9C%93&q=is%3Aissue%20is%3Aopen%20lazy%20sort
     this.totalTripsCnt = 0;
     this.trips = [];
+
     this.apiClient.loadCurrentUserTrips(event.first, event.rows, event.sortField, event.sortOrder)
       .subscribe(trips => {
         this.trips = trips.trips;
