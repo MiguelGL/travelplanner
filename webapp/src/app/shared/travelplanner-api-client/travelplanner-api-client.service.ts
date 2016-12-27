@@ -121,8 +121,39 @@ export class TravelplannerApiClientService {
     const search = new URLSearchParams();
     search.set("offset", `${offset}`);
     search.set("limit", `${limit}`);
-    search.set('orderBy', this.TRIP_ORDER_BY_FIELDS[sortField] || 'startDate');
+    search.set('orderBy', this.TRIP_ORDER_BY_FIELDS[sortField] || 'START_DATE');
     search.set('orderSpec', this.apiOrderBySpec(sortOrder));
+
+    return this.http.get(`/travelplanner/api/sec/users/${this.loggedInUser.id}/trips`, {search})
+      .map(response => {
+        if (response.status === 200) {
+          const now = this.truncateDateToDay(new Date());
+          return {
+            trips: response.json().map(apiTrip => this.apiTripToTrip(now, apiTrip)),
+            total: parseInt(response.headers.get('X-Available-Records-Count'), 10)
+          };
+        } else {
+          throw response;
+        }
+      });
+  }
+
+  loadMonthUserTrips(offset: number, limit: number,
+                     year: number,  month: number): Observable<{trips: Trip[], total: number}> {
+    const fromDate = new Date(Date.UTC(year, month));
+    let toDate;
+    if (month => 11) {
+      toDate = new Date(Date.UTC(year + 1, 0));
+    } else {
+      toDate = new Date(Date.UTC(year, month + 1));
+    }
+    const search = new URLSearchParams();
+    search.set("offset", `${offset}`);
+    search.set("limit", `${limit}`);
+    search.set("orderBy", 'START_DATE');
+    search.set("orderSpec", 'ASC');
+    search.set('fromDateTs', `${fromDate.getTime()}`);
+    search.set('toDateTs', `${toDate.getTime()}`);
 
     return this.http.get(`/travelplanner/api/sec/users/${this.loggedInUser.id}/trips`, {search})
       .map(response => {

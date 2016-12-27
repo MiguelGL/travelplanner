@@ -1,0 +1,25 @@
+<p-dataTable [value]="trips" [lazy]="true" [rows]="10" [paginator]="true"
+             [totalRecords]="totalTripsCnt" (onLazyLoad)="loadMonthTripsLazy($event)">
+  <header>Your Trip Plan for {{year}}/{{month}}</header>
+  <p-column field="startDate" header="Start">
+    <template let-col let-trip="rowData" pTemplate="body">
+      {{trip[col.field] | amDateFormat:'LL'}}
+    </template>
+  </p-column>
+  <p-column field="endDate" header="End">
+    <template let-col let-trip="rowData" pTemplate="body">
+      {{trip[col.field] | amDateFormat:'LL'}}
+    </template>
+  </p-column>
+  <p-column field="destination" header="Destination"></p-column>
+  <p-column field="daysToStart" header="Days to Start">
+    <template let-col let-trip="rowData" pTemplate="body">
+      {{trip[col.field] > 0 ? trip[col.field] : ''}}
+    </template>
+  </p-column>
+  <p-column field="comment" header="Comment">
+    <template let-col let-trip="rowData" pTemplate="body">
+      <span class="comment-column">{{trip[col.field]}}</span>
+    </template>
+  </p-column>
+</p-dataTable>

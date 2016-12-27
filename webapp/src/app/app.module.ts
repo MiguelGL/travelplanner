@@ -21,6 +21,7 @@ import { CreateTripComponent } from './my-trips/create-trip.component';
 import { LoggedInRouterGuard } from './login/logged-in-router-guard';
 import { NotLoggedInRouterGuard } from './login/not-logged-in-router-guard';
 import { CalendarModule } from 'primeng/components/calendar/calendar';
+import { TripsPlanComponent } from './trips-plan/trips-plan.component';
 
 @NgModule({
   declarations: [
@@ -29,7 +30,8 @@ import { CalendarModule } from 'primeng/components/calendar/calendar';
     LoginComponent,
     RegisterComponent,
     MyTripsComponent,
-    CreateTripComponent
+    CreateTripComponent,
+    TripsPlanComponent
   ],
   imports: [
     // angular

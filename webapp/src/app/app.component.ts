@@ -7,11 +7,31 @@ import { Router } from '@angular/router';
   selector: 'app-root',
   templateUrl: './app.component.html'
 })
-export class AppComponent {
+export class AppComponent implements OnInit {
+
+  private startDate: Date;
 
   constructor(private messagesService: GlobalMessagesService,
               private apiClient: TravelplannerApiClientService,
               private router: Router) {}
+
+  ngOnInit() {
+    this.startDate = new Date();
+  }
+
+  get year() {
+    return this.startDate.getFullYear();
+  }
+
+  get month() {
+    return this.startDate.getMonth() + 1;
+  }
+
+  get tripPlanLink() {
+    const year = this.month >= 12 ? this.year + 1 : this.year;
+    const month = this.month >= 11 ? 1 : this.month + 1;
+    return `/my-trips/${year}/${month}`;
+  }
 
   get messages() {
     return this.messagesService.messages;
