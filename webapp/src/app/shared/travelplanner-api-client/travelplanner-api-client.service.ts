@@ -269,4 +269,15 @@ export class TravelplannerApiClientService {
 
   }
 
+  deleteUser(id: number): Observable<void> {
+    return this.http.delete(`/travelplanner/api/sec/users/${id}`)
+      .map(response => {
+        if (response.status === 200) {
+          return;
+        } else {
+          throw response;
+        }
+      });
+  }
+
 }

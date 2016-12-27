@@ -1,7 +1,20 @@
 <h1>All {{users.length}} Users</h1>
-<p-dataTable [value]="users" [rows]="10" [paginator]="true">
+<h2 class="global-filter-title">Global Filter:</h2>
+<input #gb type="text" placeholder="Global search" class="global-filter-input">
+<p-dataTable [value]="users" [rows]="10" [paginator]="true" [globalFilter]="gb"
+             selectionMode="single" [(selection)]="selectedUser">
   <p-column field="email" header="Email" [sortable]="true"></p-column>
   <p-column field="role" header="Role" [sortable]="true"></p-column>
   <p-column field="firstName" header="First Name" [sortable]="true"></p-column>
   <p-column field="lastName" header="Last Name" [sortable]="true"></p-column>
+  <p-column styleClass="col-button">
+    <template let-user="rowData" pTemplate="body">
+      <button type="button" pButton (click)="deleteUser(user)" icon="fa-remove"></button>
+    </template>
+  </p-column>
+  <p-column styleClass="col-button">
+    <template let-user="rowData" pTemplate="body">
+      <button type="button" pButton (click)="editUser(user)" icon="fa-edit"></button>
+    </template>
+  </p-column>
 </p-dataTable>

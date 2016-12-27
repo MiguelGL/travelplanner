@@ -25,6 +25,7 @@ import { TripsPlanComponent } from './trips-plan/trips-plan.component';
 import { EditTripComponent } from './my-trips/edit-trip.component';
 import { UsersListComponent } from './users/users-list.component';
 import { UsersManagementRouterGuard } from './users/users-management-router-guard';
+import { UserCreateComponent } from './users/user-create.component';
 
 @NgModule({
   declarations: [
@@ -36,7 +37,8 @@ import { UsersManagementRouterGuard } from './users/users-management-router-guar
     CreateTripComponent,
     TripsPlanComponent,
     EditTripComponent,
-    UsersListComponent
+    UsersListComponent,
+    UserCreateComponent
   ],
   imports: [
     // angular

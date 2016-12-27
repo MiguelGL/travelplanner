@@ -38,7 +38,7 @@ export class LoginComponent implements OnInit {
         this.messagesService.display({
           severity: 'success', summary: 'Login OK',
           detail: 'Registration successful'
-        })
+        });
         this.router.navigateByUrl('/my-trips');
       }, (error) => {
         if (error instanceof Response) {
