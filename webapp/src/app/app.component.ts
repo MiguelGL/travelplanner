@@ -52,8 +52,9 @@ export class AppComponent implements OnInit {
       }, (error) => {
         this.messagesService.display({
           severity: 'error', summary: 'Error logging out',
-          detail: 'Could not log you out'
+          detail: 'Could not log you out, redirecting to login anyway'
         });
+        this.router.navigateByUrl('/login');
       });
   }
 
