@@ -5,8 +5,7 @@ import { TravelplannerApiClientService } from '../shared/travelplanner-api-clien
 import { GlobalMessagesService } from '../shared/global-messages-service/global-messages.service';
 
 @Component({
-  templateUrl: './my-trips.component.html',
-  styleUrls: [ './my-trips.component.scss' ]
+  templateUrl: './my-trips.component.html'
 })
 export class MyTripsComponent {
 
@@ -36,4 +35,9 @@ export class MyTripsComponent {
         })
       });
   }
+
+  deleteTrip(trip: Trip) {
+    console.log(trip);
+  }
+
 }

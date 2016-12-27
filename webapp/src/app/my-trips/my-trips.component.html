@@ -2,25 +2,26 @@
 <p-dataTable [value]="trips" [lazy]="true" [rows]="10" [paginator]="true"
              [totalRecords]="totalTripsCnt" (onLazyLoad)="loadTripsLazy($event)">
   <header>List of Trips</header>
-  <p-column field="startDate" header="Start" [sortable]="true">
+  <p-column field="startDate" header="Start" [sortable]="true" styleClass="col-date">
     <template let-col let-trip="rowData" pTemplate="body">
       {{trip[col.field] | amDateFormat:'LL'}}
     </template>
   </p-column>
-  <p-column field="endDate" header="End" [sortable]="true">
+  <p-column field="endDate" header="End" [sortable]="true" styleClass="col-date">
     <template let-col let-trip="rowData" pTemplate="body">
       {{trip[col.field] | amDateFormat:'LL'}}
     </template>
   </p-column>
-  <p-column field="destination" header="Destination" [sortable]="true"></p-column>
-  <p-column field="daysToStart" header="Days to Start">
+  <p-column field="destination" header="Destination" [sortable]="true" styleClass="col-destination"></p-column>
+  <p-column field="daysToStart" header="Days" styleClass="col-days">
     <template let-col let-trip="rowData" pTemplate="body">
       {{trip[col.field] > 0 ? trip[col.field] : ''}}
     </template>
   </p-column>
-  <p-column field="comment" header="Comment">
-    <template let-col let-trip="rowData" pTemplate="body">
-      <span class="comment-column">{{trip[col.field]}}</span>
+  <p-column field="comment" header="Comment" styleClass="col-comment"></p-column>
+  <p-column styleClass="col-button">
+    <template let-trip="rowData" pTemplate="body">
+      <button type="button" pButton (click)="deleteTrip(trip)" icon="fa-remove"></button>
     </template>
   </p-column>
 </p-dataTable>
