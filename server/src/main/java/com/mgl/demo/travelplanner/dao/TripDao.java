@@ -61,7 +61,8 @@ public class TripDao extends BaseEntityDao<Long, Trip, QTrip> {
                 maybeFromDate.map(fromDate -> pathBase().startDate.before(fromDate).not())
                 .orElse(null));
         predicate = predicate.and(
-                maybeToDate.map(toDate -> pathBase().endDate.after(toDate).not())
+                maybeToDate.map(toDate -> pathBase().endDate.after(toDate).not()
+                                          .and(pathBase().endDate.eq(toDate).not()))
                 .orElse(null));
         return count(predicate);
     }
@@ -75,7 +76,8 @@ public class TripDao extends BaseEntityDao<Long, Trip, QTrip> {
                 maybeFromDate.map(fromDate -> pathBase().startDate.before(fromDate).not())
                 .orElse(null));
         predicate = predicate.and(
-                maybeToDate.map(toDate -> pathBase().endDate.after(toDate).not())
+                maybeToDate.map(toDate -> pathBase().endDate.after(toDate).not()
+                                          .and(pathBase().endDate.eq(toDate).not()))
                 .orElse(null));
         return find(
                 Optional.of(offset),
@@ -89,7 +91,8 @@ public class TripDao extends BaseEntityDao<Long, Trip, QTrip> {
                 maybeFromDate.map(fromDate -> pathBase().startDate.before(fromDate).not());
 
         Optional<BooleanExpression> maybeFullPredicate = maybeToDate
-                .map(toDate -> pathBase().endDate.after(toDate).not())
+                .map(toDate -> pathBase().endDate.after(toDate).not()
+                               .and(pathBase().endDate.eq(toDate).not()))
                 .flatMap(p2 -> maybeFromPredicate.map(p1 -> p1.and(p2)));
 
         return maybeFullPredicate
@@ -105,7 +108,8 @@ public class TripDao extends BaseEntityDao<Long, Trip, QTrip> {
                 maybeFromDate.map(fromDate -> pathBase().startDate.before(fromDate).not());
 
         Optional<BooleanExpression> maybeFullPredicate = maybeToDate
-                .map(toDate -> pathBase().endDate.after(toDate).not())
+                .map(toDate -> pathBase().endDate.after(toDate).not()
+                               .and(pathBase().endDate.eq(toDate).not()))
                 .flatMap(p2 -> maybeFromPredicate.map(p1 -> p1.and(p2)));
 
         return maybeFullPredicate
