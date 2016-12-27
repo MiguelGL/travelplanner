@@ -56,6 +56,7 @@ public class UserService {
         return createUser(email, plainPassword, Role.REGULAR_USER, firstName, lastName);
     }
 
+    @PermitAll
     public User createAdminUser(
             @NotBlank String email,
             @NotBlank String plainPassword,
@@ -64,6 +65,7 @@ public class UserService {
         return createUser(email, plainPassword, Role.ADMINISTRATOR, firstName, lastName);
     }
 
+    @PermitAll
     public User createManagerUser(
             @NotBlank String email,
             @NotBlank String plainPassword,
