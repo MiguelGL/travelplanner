@@ -1,6 +1,8 @@
 package com.mgl.demo.travelplanner.rest;
 
+import static com.mgl.demo.travelplanner.rest.support.Pagination.AVAILABLE_RECORDS_COUNT_HEADER;
 import static com.mgl.demo.travelplanner.rest.support.Pagination.MAX_PAGINATED_RESULTS;
+import static com.mgl.demo.travelplanner.rest.support.Pagination.MAX_PAGINATED_RESULTS_HEADER;
 import static com.mgl.demo.travelplanner.rest.support.Pagination.boundLimit;
 
 import java.util.List;
@@ -18,6 +20,7 @@ import javax.ws.rs.Produces;
 import javax.ws.rs.QueryParam;
 import javax.ws.rs.core.GenericEntity;
 import javax.ws.rs.core.MediaType;
+import javax.ws.rs.core.Response;
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlRootElement;
@@ -86,13 +89,17 @@ public class UsersResource {
     
     @GET
     @Produces(MediaType.APPLICATION_JSON)
-    public GenericEntity<List<User>> getUsers(
+    public Response getUsers(
             @QueryParam("orderBy") @DefaultValue(OrderByField.DEFAULT) OrderByField orderBy,
             @QueryParam("orderSpec") @DefaultValue(OrderBySpec.DEFAULT) OrderBySpec orderSpec,
             @QueryParam("offset") @DefaultValue("0") @Min(0) long offset,
             @QueryParam("limit") @DefaultValue("" + MAX_PAGINATED_RESULTS) @Min(0) long limit) {
         List<User> allUsers = userDao.findAll(orderBy, orderSpec, offset, boundLimit(limit));
-        return new GenericEntity<List<User>>(allUsers) {};
+        long usersCount = userDao.countAll();
+        return Response.ok(new GenericEntity<List<User>>(allUsers) {})
+                .header(MAX_PAGINATED_RESULTS_HEADER, MAX_PAGINATED_RESULTS)
+                .header(AVAILABLE_RECORDS_COUNT_HEADER, usersCount)
+                .build();
     }
 
     @POST

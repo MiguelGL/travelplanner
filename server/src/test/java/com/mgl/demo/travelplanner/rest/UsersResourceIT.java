@@ -3,6 +3,7 @@ package com.mgl.demo.travelplanner.rest;
 import org.junit.Test;
 
 import static io.restassured.RestAssured.*;
+import static org.hamcrest.Matchers.*;
 
 import javax.ws.rs.core.Response.Status;
 
@@ -61,7 +62,9 @@ public class UsersResourceIT extends BaseAdminResourceIT {
                 .get("/sec/users")
         .then()
                 .statusCode(Status.OK.getStatusCode())
-                .contentType(ContentType.JSON);
+                .contentType(ContentType.JSON)
+                .header("X-Max-Page-Len", notNullValue())
+                .header("X-Available-Records-Count", notNullValue());
     }
 
 }

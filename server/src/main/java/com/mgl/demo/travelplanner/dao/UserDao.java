@@ -72,4 +72,8 @@ public class UserDao extends BaseEntityDao<Long, User, QUser> {
         return find(Optional.of(offset), Optional.of(limit), maybeOrder);
     }
 
+    public long countAll() {
+        return jpaQueryFactory().selectFrom(pathBase()).fetchCount();
+    }
+
 }

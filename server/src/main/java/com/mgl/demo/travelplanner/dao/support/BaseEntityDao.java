@@ -96,6 +96,11 @@ public abstract class BaseEntityDao<
         }
     }
 
+    public long count(Predicate ...predicates) {
+        JPAQuery<E> query = jpaQueryFactory().selectFrom(pathBase()).where(predicates);
+        return query.fetchCount();
+    }
+
     public List<E> find(
             Optional<Long> maybeOffset,
             Optional<Long> maybeLimit,

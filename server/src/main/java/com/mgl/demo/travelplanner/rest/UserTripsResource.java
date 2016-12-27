@@ -3,7 +3,9 @@ package com.mgl.demo.travelplanner.rest;
 import static com.mgl.demo.travelplanner.entity.Destination.DESTINATION_MAX_LEN;
 import static com.mgl.demo.travelplanner.entity.Destination.DESTINATION_MIX_LEN;
 import static com.mgl.demo.travelplanner.entity.Trip.COMMENT_MAX_LEN;
+import static com.mgl.demo.travelplanner.rest.support.Pagination.AVAILABLE_RECORDS_COUNT_HEADER;
 import static com.mgl.demo.travelplanner.rest.support.Pagination.MAX_PAGINATED_RESULTS;
+import static com.mgl.demo.travelplanner.rest.support.Pagination.MAX_PAGINATED_RESULTS_HEADER;
 
 import java.time.Instant;
 import java.time.LocalDate;
@@ -25,6 +27,7 @@ import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.QueryParam;
 import javax.ws.rs.core.GenericEntity;
+import javax.ws.rs.core.Response;
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlRootElement;
@@ -93,7 +96,7 @@ public class UserTripsResource {
     }
 
     @GET
-    public GenericEntity<List<Trip>> getUserTrips(
+    public Response getUserTrips(
             @PathParam("userId") Long userId,
             @QueryParam("fromDateTs") Long fromDateTs,
             @QueryParam("toDateTs") Long toDateTs,
@@ -107,7 +110,11 @@ public class UserTripsResource {
         Optional<LocalDate> maybeToDate = Optional.ofNullable(toDateTs).map(UserTripsResource::fromTs);
         List<Trip> trips = tripDao.findUserTrips(
                 user, maybeFromDate, maybeToDate, orderBy, orderSpec, offset, limit);
-        return new GenericEntity<List<Trip>>(trips) {};
+        long tripsCount = tripDao.countUserTrips(user, maybeFromDate, maybeToDate);
+        return Response.ok(new GenericEntity<List<Trip>>(trips) {})
+                .header(MAX_PAGINATED_RESULTS_HEADER, MAX_PAGINATED_RESULTS)
+                .header(AVAILABLE_RECORDS_COUNT_HEADER, tripsCount)
+                .build();
     }
 
     @POST

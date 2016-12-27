@@ -58,6 +58,8 @@ public class TripsResourceIT extends BaseAdminResourceIT {
         .then()
                 .statusCode(Status.OK.getStatusCode())
                 .contentType(ContentType.JSON)
+                .header("X-Max-Page-Len", notNullValue())
+                .header("X-Available-Records-Count", notNullValue())
                 .body("$", not(empty()));
 
         given()
@@ -68,6 +70,8 @@ public class TripsResourceIT extends BaseAdminResourceIT {
         .then()
                 .statusCode(Status.OK.getStatusCode())
                 .contentType(ContentType.JSON)
+                .header("X-Max-Page-Len", notNullValue())
+                .header("X-Available-Records-Count", notNullValue())
                 .body("$", not(empty()));
 
         given()
@@ -80,6 +84,8 @@ public class TripsResourceIT extends BaseAdminResourceIT {
         .then()
                 .statusCode(Status.OK.getStatusCode())
                 .contentType(ContentType.JSON)
+                .header("X-Max-Page-Len", notNullValue())
+                .header("X-Available-Records-Count", notNullValue())
                 .body("$", empty());
     }
 

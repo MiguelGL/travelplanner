@@ -54,6 +54,18 @@ public class TripDao extends BaseEntityDao<Long, Trip, QTrip> {
         super(Trip.class, QTrip.trip);
     }
 
+    public long countUserTrips(User user,
+            Optional<LocalDate> maybeFromDate, Optional<LocalDate> maybeToDate) {
+        BooleanExpression predicate = pathBase().user.eq(user);
+        predicate = predicate.and(
+                maybeFromDate.map(fromDate -> pathBase().startDate.before(fromDate).not())
+                .orElse(null));
+        predicate = predicate.and(
+                maybeToDate.map(toDate -> pathBase().endDate.after(toDate).not())
+                .orElse(null));
+        return count(predicate);
+    }
+
     public List<Trip> findUserTrips(User user,
             Optional<LocalDate> maybeFromDate, Optional<LocalDate> maybeToDate,
             OrderByField orderByField, OrderBySpec orderBySpec,
@@ -70,6 +82,19 @@ public class TripDao extends BaseEntityDao<Long, Trip, QTrip> {
                 Optional.of(limit),
                 orderByField.maybeBuildOrderSpecifier(orderBySpec),
                 predicate);
+    }
+
+    public long countAllTrips(Optional<LocalDate> maybeFromDate, Optional<LocalDate> maybeToDate) {
+        Optional<BooleanExpression> maybeFromPredicate =
+                maybeFromDate.map(fromDate -> pathBase().startDate.before(fromDate).not());
+
+        Optional<BooleanExpression> maybeFullPredicate = maybeToDate
+                .map(toDate -> pathBase().endDate.after(toDate).not())
+                .flatMap(p2 -> maybeFromPredicate.map(p1 -> p1.and(p2)));
+
+        return maybeFullPredicate
+                .map(predicate -> count(predicate))
+                .orElseGet(() -> count());
     }
 
     public List<Trip> findAllTrips(
