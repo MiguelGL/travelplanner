@@ -213,6 +213,35 @@ export class TravelplannerApiClientService {
       });
   }
 
+  loadCurrentUserTrip(id: number): Observable<Trip> {
+    return this.http.get(`/travelplanner/api/sec/trips/${id}`)
+      .map(response => {
+        if (response.status === 200) {
+          return this.apiTripToTrip(this.truncateDateToDay(new Date()), response.json());
+        } else {
+          throw response;
+        }
+      });
+  }
+
+  editCurrentUserTrip(id: number,  startDate: Date, endDate: Date, destinationName: string, comment = ''): Observable<Trip> {
+    const tripData = {
+      startDate: startDate.getTime(),
+      endDate: endDate.getTime(),
+      destinationName,
+      comment
+    };
+
+    return this.http.put(`/travelplanner/api/sec/trips/${id}`, tripData)
+      .map(response => {
+        if (response.status === 200) {
+          return this.apiTripToTrip(this.truncateDateToDay(new Date()), response.json());
+        } else {
+          throw response;
+        }
+      });
+  }
+
   deleteTrip(id: number): Observable<void> {
     return this.http.delete(`/travelplanner/api/sec/trips/${id}`)
       .map(response => {

@@ -24,4 +24,9 @@
       <button type="button" pButton (click)="deleteTrip(trip)" icon="fa-remove"></button>
     </template>
   </p-column>
+  <p-column styleClass="col-button">
+    <template let-trip="rowData" pTemplate="body">
+      <button type="button" pButton (click)="editTrip(trip)" icon="fa-edit"></button>
+    </template>
+  </p-column>
 </p-dataTable>

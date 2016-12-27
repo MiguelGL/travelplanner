@@ -29,7 +29,6 @@ export class TripsPlanComponent implements OnInit {
   }
 
   loadMonthTripsLazy(event: LazyLoadEvent) {
-    console.log('event', event);
     this.apiClient.loadMonthUserTrips(event.first, event.rows, this.year, this.month - 1)
       .subscribe(trips => {
         this.trips = trips.trips;

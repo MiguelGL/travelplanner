@@ -4,6 +4,7 @@ import { LazyLoadEvent } from 'primeng/components/common/api';
 import { TravelplannerApiClientService } from '../shared/travelplanner-api-client/travelplanner-api-client.service';
 import { GlobalMessagesService } from '../shared/global-messages-service/global-messages.service';
 import { Response } from '@angular/http';
+import { Router } from '@angular/router';
 
 @Component({
   templateUrl: './my-trips.component.html'
@@ -15,7 +16,8 @@ export class MyTripsComponent {
   totalTripsCnt: number = 0;
 
   constructor(private apiClient: TravelplannerApiClientService,
-              private messagesService: GlobalMessagesService /*,
+              private messagesService: GlobalMessagesService,
+              private router: Router /*,
               private cdr: ChangeDetectorRef */) {}
 
   loadTripsLazy(event: LazyLoadEvent) {
@@ -35,6 +37,10 @@ export class MyTripsComponent {
           detail: 'Could not load trips'
         })
       });
+  }
+
+  editTrip(trip: Trip) {
+    this.router.navigateByUrl(`/my-trips/${trip.id}/edit`);
   }
 
   deleteTrip(trip: Trip) {
