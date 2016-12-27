@@ -18,6 +18,10 @@ export class TravelplannerApiClientService {
     return !!this.loggedInUser;
   }
 
+  get userDescription() {
+    return `${this.loggedInUser.email} (${this.loggedInUser.role})`
+  }
+
   checkLoggedIn(): Observable<boolean> {
     return this.http.get('/travelplanner/api/login')
       .map(response => {

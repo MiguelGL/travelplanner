@@ -41,6 +41,10 @@ export class AppComponent implements OnInit {
     return this.apiClient.isLoggedIn;
   }
 
+  get userDescription() {
+    return this.apiClient.userDescription;
+  }
+
   logout() {
     this.apiClient.logout()
       .subscribe(() => {
