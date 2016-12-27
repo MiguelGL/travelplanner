@@ -12,6 +12,7 @@ import { EditTripComponent } from './my-trips/edit-trip.component';
 import { UsersListComponent } from './users/users-list.component';
 import { UsersManagementRouterGuard } from './users/users-management-router-guard';
 import { UserCreateComponent } from './users/user-create.component';
+import { UserEditComponent } from './users/user-edit.component';
 
 const ROUTES: Routes = [
   { path: '', pathMatch: 'full', redirectTo: '/login'},
@@ -25,8 +26,8 @@ const ROUTES: Routes = [
   ]},
   { path: 'users', canActivate: [ LoggedInRouterGuard, UsersManagementRouterGuard ], children: [
     { path: '', pathMatch: 'full', component: UsersListComponent },
-    { path: 'create', pathMatch: 'full', component: UserCreateComponent }
-  ]},
+    { path: 'create', pathMatch: 'full', component: UserCreateComponent },
+    { path: ':id/edit', component: UserEditComponent },  ]},
   { path: '**', component: RouteNotFoundComponent}
 ];
 

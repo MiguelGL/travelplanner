@@ -1,6 +1,7 @@
 import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
 import { FormBuilder, Validators, FormControl, FormGroup } from '@angular/forms';
 import { User } from '../shared/travelplanner-api-client/user';
+import { Observable } from 'rxjs';
 
 @Component({
   selector: 'user-form',
@@ -8,7 +9,7 @@ import { User } from '../shared/travelplanner-api-client/user';
 })
 export class UserFormComponent implements OnInit {
 
-  @Input() user: User;
+  @Input() user: Observable<User>;
 
   @Output() saveRequest = new EventEmitter<User>();
 
@@ -18,6 +19,7 @@ export class UserFormComponent implements OnInit {
 
   ngOnInit() {
     this.userForm = this.formBuilder.group({
+      id: new FormControl(0), // Won't show
       email: new FormControl('', Validators.compose([
         Validators.required,
         Validators.minLength(3),
@@ -59,11 +61,12 @@ export class UserFormComponent implements OnInit {
       }
     });
 
-    if (this.user) this.userForm.patchValue(this.user, { onlySelf: true});
+    this.user.subscribe(user => this.userForm.patchValue(user, { onlySelf: true}));
   }
 
   submit(value: any, valid: boolean, data: any) {
     if (!valid) return;
     this.saveRequest.emit(value as User);
   }
+
 }

@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { TravelplannerApiClientService } from '../shared/travelplanner-api-client/travelplanner-api-client.service';
 import { User } from '../shared/travelplanner-api-client/user';
 import { GlobalMessagesService } from '../shared/global-messages-service/global-messages.service';
+import { Router } from '@angular/router';
 
 @Component({
   templateUrl: './users-list.component.html',
@@ -14,7 +15,8 @@ export class UsersListComponent implements OnInit {
   selectedUser: User;
 
   constructor(private apiClient: TravelplannerApiClientService,
-              private messagesService: GlobalMessagesService) {}
+              private messagesService: GlobalMessagesService,
+              private router: Router) {}
 
   ngOnInit() {
     this.apiClient.loadAllUsers()
@@ -53,7 +55,7 @@ export class UsersListComponent implements OnInit {
   }
 
   editUser(user: User) {
-    console.log('edit user');
+    this.router.navigateByUrl(`/users/${user.id}/edit`);
   }
 
 }

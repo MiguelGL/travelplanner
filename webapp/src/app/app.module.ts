@@ -27,6 +27,7 @@ import { UsersListComponent } from './users/users-list.component';
 import { UsersManagementRouterGuard } from './users/users-management-router-guard';
 import { UserCreateComponent } from './users/user-create.component';
 import { UserFormComponent } from './users/user-form.component';
+import { UserEditComponent } from './users/user-edit.component';
 
 @NgModule({
   declarations: [
@@ -40,7 +41,8 @@ import { UserFormComponent } from './users/user-form.component';
     EditTripComponent,
     UsersListComponent,
     UserCreateComponent,
-    UserFormComponent
+    UserFormComponent,
+    UserEditComponent
   ],
   imports: [
     // angular

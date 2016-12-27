@@ -266,7 +266,17 @@ export class TravelplannerApiClientService {
           throw response;
         }
       });
+  }
 
+  loadUser(id: number): Observable<User> {
+    return this.http.get(`/travelplanner/api/sec/users/${id}`)
+      .map(response => {
+        if (response.status === 200) {
+          return response.json() as User;
+        } else {
+          throw response;
+        }
+      });
   }
 
   deleteUser(id: number): Observable<void> {
@@ -284,6 +294,19 @@ export class TravelplannerApiClientService {
              firstName: string, lastName = ''): Observable<User> {
     const user = { email, role, plainPassword: password, firstName, lastName };
     return this.http.post('/travelplanner/api/sec/users', user)
+      .map(response => {
+        if (response.status === 200) {
+          return response.json() as User;
+        } {
+          throw response;
+        }
+      });
+  }
+
+  editUser(id: number, email: string, role: string, password: string,
+           firstName: string, lastName = ''): Observable<User> {
+    const user = { email, role, plainPassword: password, firstName, lastName };
+    return this.http.put(`/travelplanner/api/sec/users/${id}`, user)
       .map(response => {
         if (response.status === 200) {
           return response.json() as User;
