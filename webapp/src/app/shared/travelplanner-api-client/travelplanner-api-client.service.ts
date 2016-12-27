@@ -142,7 +142,7 @@ export class TravelplannerApiClientService {
                      year: number,  month: number): Observable<{trips: Trip[], total: number}> {
     const fromDate = new Date(Date.UTC(year, month));
     let toDate;
-    if (month => 11) {
+    if (month >= 11) {
       toDate = new Date(Date.UTC(year + 1, 0));
     } else {
       toDate = new Date(Date.UTC(year, month + 1));
