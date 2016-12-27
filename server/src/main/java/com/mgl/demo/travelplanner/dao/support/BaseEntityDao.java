@@ -76,7 +76,7 @@ public abstract class BaseEntityDao<
         E entity = em().find(clazz, id);
         if (entity == null) {
             throw new EntityNotFoundException("Expected existing " + entityName
-                    + "with id '" + id + "' not found");
+                    + " with id '" + id + "' not found");
         } else {
             return entity;
         }
