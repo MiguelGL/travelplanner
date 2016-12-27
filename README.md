@@ -49,3 +49,5 @@ A non-exclusive list of subjects is included next.
 - There is no functionality for users to recover their passwords in case they forgot.
 - There is no way to validate email addresses users enter are indeed valid (real). An additional step to email these addresses a confirmation link or similar would be a nice improvement.
 - Angular router deactivation guards could be used to prevent user from navigating away from pages where values have been entered and could therefore be lost.
+- Angular's AOT (Ahead Of Time) compiling feature could be used to speedup application client-side bootstrapping by precompiling templates.
+- Because previously selected user destinations are stored server-side, autocompletion support could be added to the control used to enter a trip destination.
