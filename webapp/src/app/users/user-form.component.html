@@ -1,0 +1,74 @@
+<form [formGroup]="userForm" (ngSubmit)="submit(userForm.value, userForm.valid, userForm)">
+  <div class="form-group">
+    <label for="emailInput">Email</label>
+    <input pInputText type="text" id="emailInput" class="form-control"
+           placeholder="Enter email" required
+           formControlName="email">
+    <div *ngIf="userForm.controls.email.dirty && !userForm.controls.email.valid"
+         class="ui-message ui-messages-error ui-corner-all">
+      <span *ngIf="userForm.controls.email.errors?.required">Email is required</span>
+      <span *ngIf="userForm.controls.email.errors?.minlength">Too short to be an email</span>
+      <span *ngIf="userForm.controls.email.errors?.maxlength">Email is too long</span>
+      <span *ngIf="userForm.controls.email.errors?.pattern">Invalid email format</span>
+    </div>
+  </div>
+  <div class="form-group">
+    <label for="roleInput">Role</label>
+    <select id="roleInput" formControlName="role" required class="form-control">
+      <option value="REGULAR_USER">REGULAR_USER</option>
+      <option value="MANAGER">MANAGER</option>
+      <option value="ADMINISTRATOR">ADMINISTRATOR</option>
+    </select>
+  </div>
+  <div class="form-group">
+    <label for="firstNameInput">First Name</label>
+    <input pInputText type="text" id="firstNameInput" class="form-control"
+           placeholder="Enter first name" required
+           formControlName="firstName">
+    <div *ngIf="userForm.controls.firstName.dirty && !userForm.controls.firstName.valid"
+         class="ui-message ui-messages-error ui-corner-all">
+      <span *ngIf="userForm.controls.firstName.errors?.required">First Name is required</span>
+      <span *ngIf="userForm.controls.firstName.errors?.minlength">Too short</span>
+      <span *ngIf="userForm.controls.firstName.errors?.maxlength">Too long</span>
+    </div>
+  </div>
+  <div class="form-group">
+    <label for="lastNameInput">Last Name (optional)</label>
+    <input pInputText type="text" id="lastNameInput" class="form-control"
+           placeholder="Enter last name (optional)"
+           formControlName="lastName">
+    <div *ngIf="userForm.controls.lastName.dirty && !userForm.controls.lastName.valid"
+         class="ui-message ui-messages-error ui-corner-all">
+      <span *ngIf="userForm.controls.lastName.errors?.maxlength">Too long</span>
+    </div>
+  </div>
+  <div class="form-group">
+    <label for="passwordInput">Password</label>
+    <input pInputText type="password" id="passwordInput" class="form-control"
+           placeholder="Select a password" required
+           formControlName="password">
+    <div *ngIf="userForm.controls.password.dirty && !userForm.controls.password.valid"
+         class="ui-message ui-messages-error ui-corner-all">
+      <span *ngIf="userForm.controls.password.errors?.required">Password is required</span>
+      <span *ngIf="userForm.controls.password.errors?.minlength">Too short</span>
+      <span *ngIf="userForm.controls.password.errors?.maxlength">Too long</span>
+      <span *ngIf="userForm.controls.password.errors?.pattern">Alphanumeric, '-' and '_' only</span>
+    </div>
+  </div>
+  <div class="form-group">
+    <label for="confirmedPasswordInput">Confirm Password</label>
+    <input pInputText type="password" id="confirmedPasswordInput" class="form-control"
+           placeholder="Confirm password" required
+           formControlName="confirmedPassword">
+    <div *ngIf="userForm.controls.confirmedPassword.dirty && !userForm.controls.confirmedPassword.valid"
+         class="ui-message ui-messages-error ui-corner-all">
+      <span *ngIf="userForm.controls.confirmedPassword.errors?.required">Confirmed Password is required</span>
+      <span *ngIf="userForm.controls.confirmedPassword.errors?.minlength">Too short</span>
+      <span *ngIf="userForm.controls.confirmedPassword.errors?.maxlength">Too long</span>
+      <span *ngIf="userForm.controls.confirmedPassword.errors?.pattern">Alphanumeric, '-' and '_' only</span>
+      <span *ngIf="userForm.controls.confirmedPassword.errors?.passwordsmismatch">Confirmed password does not match</span>
+    </div>
+  </div>
+  <button pButton type="submit" icon="fa-check" iconPos="left" label="Save"
+          [disabled]="!userForm.valid"></button>
+</form>

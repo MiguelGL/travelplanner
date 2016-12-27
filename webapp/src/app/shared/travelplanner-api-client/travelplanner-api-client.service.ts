@@ -280,4 +280,17 @@ export class TravelplannerApiClientService {
       });
   }
 
+  createUser(email: string, role: string, password: string,
+             firstName: string, lastName = ''): Observable<User> {
+    const user = { email, role, plainPassword: password, firstName, lastName };
+    return this.http.post('/travelplanner/api/sec/users', user)
+      .map(response => {
+        if (response.status === 200) {
+          return response.json() as User;
+        } {
+          throw response;
+        }
+      });
+  }
+
 }
