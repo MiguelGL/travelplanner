@@ -5,7 +5,8 @@ import { TravelplannerApiClientService } from '../shared/travelplanner-api-clien
 import { GlobalMessagesService } from '../shared/global-messages-service/global-messages.service';
 
 @Component({
-  templateUrl: './my-trips.component.html'
+  templateUrl: './my-trips.component.html',
+  styleUrls: [ './my-trips.component.scss' ]
 })
 export class MyTripsComponent {
 
@@ -18,7 +19,9 @@ export class MyTripsComponent {
 
   loadTripsLazy(event: LazyLoadEvent) {
     console.log('event', event);
-    this.apiClient.loadCurrentUserTrips(event.first, event.rows)
+    this.totalTripsCnt = 0;
+    this.trips = [];
+    this.apiClient.loadCurrentUserTrips(event.first, event.rows, event.sortField, event.sortOrder)
       .subscribe(trips => {
         this.trips = trips.trips;
         this.totalTripsCnt = trips.total;

@@ -99,10 +99,30 @@ export class TravelplannerApiClientService {
       })
   }
 
-  loadCurrentUserTrips(offset: number, limit: number): Observable<{trips: Trip[], total: number}> {
+  private apiOrderBySpec(sortOrder: number) {
+    if (sortOrder > 0) {
+      return 'ASC';
+    } else if (sortOrder == 0) {
+      return 'NONE';
+    } else {
+      return 'DESC';
+    }
+  }
+
+  private readonly TRIP_ORDER_BY_FIELDS = {
+    user: 'USER',
+    startDate: 'START_DATE',
+    endDate: 'END_DATE',
+    destination: 'DESTINATION'
+  };
+
+  loadCurrentUserTrips(offset: number, limit: number,
+                       sortField = 'startDate',  sortOrder = 0): Observable<{trips: Trip[], total: number}> {
     const search = new URLSearchParams();
     search.set("offset", `${offset}`);
     search.set("limit", `${limit}`);
+    search.set('orderBy', this.TRIP_ORDER_BY_FIELDS[sortField] || 'startDate');
+    search.set('orderSpec', this.apiOrderBySpec(sortOrder));
 
     return this.http.get(`/travelplanner/api/sec/users/${this.loggedInUser.id}/trips`, {search})
       .map(response => {

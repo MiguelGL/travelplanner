@@ -2,21 +2,25 @@
 <p-dataTable [value]="trips" [lazy]="true" [rows]="10" [paginator]="true"
              [totalRecords]="totalTripsCnt" (onLazyLoad)="loadTripsLazy($event)">
   <header>List of Trips</header>
-  <p-column field="startDate" header="Start">
+  <p-column field="startDate" header="Start" [sortable]="true">
     <template let-col let-trip="rowData" pTemplate="body">
       {{trip[col.field] | amDateFormat:'LL'}}
     </template>
   </p-column>
-  <p-column field="endDate" header="End">
+  <p-column field="endDate" header="End" [sortable]="true">
     <template let-col let-trip="rowData" pTemplate="body">
       {{trip[col.field] | amDateFormat:'LL'}}
     </template>
   </p-column>
-  <p-column field="destination" header="Destination"></p-column>
+  <p-column field="destination" header="Destination" [sortable]="true"></p-column>
   <p-column field="daysToStart" header="Days to Start">
     <template let-col let-trip="rowData" pTemplate="body">
       {{trip[col.field] > 0 ? trip[col.field] : ''}}
     </template>
   </p-column>
-  <p-column field="comment" header="Comment" class="comment-column"></p-column>
+  <p-column field="comment" header="Comment">
+    <template let-col let-trip="rowData" pTemplate="body">
+      <span class="comment-column">{{trip[col.field]}}</span>
+    </template>
+  </p-column>
 </p-dataTable>
