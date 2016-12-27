@@ -11,6 +11,7 @@
     <ul *ngIf="isLoggedIn" class="nav navbar-nav">
       <li><a routerLink="/my-trips">My Trips</a></li>
       <li><a [routerLink]="tripPlanLink">Next Month's Trip Plan</a></li>
+      <li *ngIf="canManageUsers"><a routerLink="/users">Users</a></li>
     </ul>
     <ul *ngIf="isLoggedIn" class="nav navbar-nav navbar-right" (click)="$event.preventDefault()">
       <li><a href="#"><span class="glyphicon glyphicon-user"></span> {{userDescription}}</a></li>

@@ -18,6 +18,10 @@ export class TravelplannerApiClientService {
     return !!this.loggedInUser;
   }
 
+  get canManageUsers() {
+    return this.isLoggedIn && this.loggedInUser.role !== 'REGULAR_USER';
+  }
+
   get userDescription() {
     return `${this.loggedInUser.email} (${this.loggedInUser.role})`
   }
@@ -251,6 +255,18 @@ export class TravelplannerApiClientService {
           throw response;
         }
       });
+  }
+
+  loadAllUsers(): Observable<User[]> {
+    return this.http.get('/travelplanner/api/sec/users')
+      .map(response => {
+        if (response.status === 200) {
+          return response.json() as User[];
+        } else {
+          throw response;
+        }
+      });
+
   }
 
 }

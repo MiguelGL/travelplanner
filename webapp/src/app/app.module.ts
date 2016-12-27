@@ -23,6 +23,8 @@ import { NotLoggedInRouterGuard } from './login/not-logged-in-router-guard';
 import { CalendarModule } from 'primeng/components/calendar/calendar';
 import { TripsPlanComponent } from './trips-plan/trips-plan.component';
 import { EditTripComponent } from './my-trips/edit-trip.component';
+import { UsersListComponent } from './users/users-list.component';
+import { UsersManagementRouterGuard } from './users/users-management-router-guard';
 
 @NgModule({
   declarations: [
@@ -33,7 +35,8 @@ import { EditTripComponent } from './my-trips/edit-trip.component';
     MyTripsComponent,
     CreateTripComponent,
     TripsPlanComponent,
-    EditTripComponent
+    EditTripComponent,
+    UsersListComponent
   ],
   imports: [
     // angular
@@ -60,7 +63,7 @@ import { EditTripComponent } from './my-trips/edit-trip.component';
     GlobalMessagesModule
   ],
   providers: [
-    LoggedInRouterGuard, NotLoggedInRouterGuard
+    LoggedInRouterGuard, NotLoggedInRouterGuard, UsersManagementRouterGuard
   ],
   bootstrap: [
     AppComponent

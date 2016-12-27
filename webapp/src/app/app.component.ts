@@ -41,6 +41,10 @@ export class AppComponent implements OnInit {
     return this.apiClient.isLoggedIn;
   }
 
+  get canManageUsers() {
+    return this.apiClient.canManageUsers;
+  }
+
   get userDescription() {
     return this.apiClient.userDescription;
   }
