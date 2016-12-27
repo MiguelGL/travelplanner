@@ -16,10 +16,6 @@ const ROUTES: Routes = [
     { path: '', pathMatch: 'full', component: MyTripsComponent },
     { path: 'create', pathMatch: 'full', component: CreateTripComponent }
   ]},
-  // { path: 'user', component: EnterUsernameComponent, children: [
-  //   { path: '' },
-  //   { path: ':username', component: RepositoriesComponent }
-  // ]},
   { path: '**', component: RouteNotFoundComponent}
 ];
 

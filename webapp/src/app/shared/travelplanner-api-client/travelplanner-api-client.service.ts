@@ -107,20 +107,50 @@ export class TravelplannerApiClientService {
     return this.http.get(`/travelplanner/api/sec/users/${this.loggedInUser.id}/trips`, {search})
       .map(response => {
         if (response.status === 200) {
-          const now = new Date();
+          const now = this.truncateDateToDay(new Date());
           return response.json().map(apiTrip => {
-            const startDate = new Date(apiTrip.startDate);
-            const endDate = new Date(apiTrip.endDate);
-            return {
-              id: apiTrip.id,
-              updated: moment(new Date(apiTrip.updated)),
-              startDate: moment(startDate),
-              endDate: moment(endDate),
-              destination: apiTrip.destinationName,
-              comment: apiTrip.comment || '',
-              daysToStart: moment.duration(now.getTime() - startDate.getTime())
-            };
+            return this.apiTripToTrip(now, apiTrip);
           });
+        } else {
+          throw response;
+        }
+      });
+  }
+
+  private truncateDateToDay(ref: Date): Date {
+    return new Date(Date.UTC(ref.getFullYear(), ref.getMonth(), ref.getDate()));
+  }
+
+  private truncateTsToDay(ts: number): Date {
+    return this.truncateDateToDay(new Date(ts));
+  }
+
+  private apiTripToTrip(now: Date, apiTrip: any): Trip {
+    const startDate = this.truncateTsToDay(apiTrip.startDate);
+    const endDate = this.truncateTsToDay(apiTrip.endDate);
+    return {
+      id: apiTrip.id,
+      updated: new Date(apiTrip.updated),
+      startDate: startDate,
+      endDate: endDate,
+      destination: apiTrip.destinationName,
+      comment: apiTrip.comment || '',
+      daysToStart: moment.duration(startDate.getTime() - now.getTime()).asDays()
+    };
+  }
+
+  createCurrentUserTrip(startDate: Date, endDate: Date, destinationName: string, comment = ''): Observable<Trip> {
+    const tripData = {
+      startDate: startDate.getTime(),
+      endDate: endDate.getTime(),
+      destinationName,
+      comment
+    };
+
+    return this.http.post(`/travelplanner/api/sec/users/${this.loggedInUser.id}/trips`, tripData)
+      .map(response => {
+        if (response.status === 200) {
+          return this.apiTripToTrip(this.truncateDateToDay(new Date()), response.json());
         } else {
           throw response;
         }

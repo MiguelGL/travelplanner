@@ -1,3 +1,48 @@
-<form>
-  Create trip
+<form [formGroup]="tripForm" (ngSubmit)="submit(tripForm.value, tripForm.valid, tripForm)">
+  <p-messages [value]="errorMessages"></p-messages>
+  <div class="form-group">
+    <label for="startDateInput">Start Date</label>
+    <p-calendar id="startDateInput"
+                required
+                formControlName="startDate"></p-calendar>
+    <div *ngIf="tripForm.controls.startDate.dirty && !tripForm.controls.startDate.valid"
+         class="ui-message ui-messages-error ui-corner-all">
+      <span *ngIf="tripForm.controls.startDate.errors?.required">Start Date is required</span>
+    </div>
+  </div>
+  <div class="form-group">
+    <label for="endDateInput">End Date</label>
+    <p-calendar id="endDateInput"
+                required
+                formControlName="endDate"></p-calendar>
+    <div *ngIf="tripForm.controls.endDate.dirty && !tripForm.controls.endDate.valid"
+         class="ui-message ui-messages-error ui-corner-all">
+      <span *ngIf="tripForm.controls.endDate.errors?.required">End Date is required</span>
+      <span *ngIf="tripForm.controls.endDate.errors?.datesmismatch">Cannot be prior to Start Date</span>
+    </div>
+  </div>
+  <div class="form-group">
+    <label for="destinationInput">Destination</label>
+    <input pInputText type="text" id="destinationInput" class="form-control"
+           placeholder="Enter the trip destination" required
+           formControlName="destination">
+    <div *ngIf="tripForm.controls.destination.dirty && !tripForm.controls.destination.valid"
+         class="ui-message ui-messages-error ui-corner-all">
+      <span *ngIf="tripForm.controls.destination.errors?.required">Destination is required</span>
+      <span *ngIf="tripForm.controls.destination.errors?.maxlength">Too long</span>
+    </div>
+  </div>
+  <div class="form-group">
+    <label for="commentInput">Comment (optional)</label>
+    <input pInputText type="text" id="commentInput" class="form-control"
+           placeholder="Enter a comment (optional)"
+           formControlName="comment">
+    <div *ngIf="tripForm.controls.comment.dirty && !tripForm.controls.comment.valid"
+         class="ui-message ui-messages-error ui-corner-all">
+      <span *ngIf="tripForm.controls.comment.errors?.maxlength">Too long</span>
+    </div>
+  </div>
+  <button pButton type="submit" icon="fa-check" iconPos="left" label="Create"
+          [disabled]="!tripForm.valid"></button>
+  <a routerLink="..">Cancel</a>
 </form>

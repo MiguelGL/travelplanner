@@ -20,6 +20,7 @@ import { DataTableModule } from 'primeng/components/datatable/datatable';
 import { CreateTripComponent } from './my-trips/create-trip.component';
 import { LoggedInRouterGuard } from './login/logged-in-router-guard';
 import { NotLoggedInRouterGuard } from './login/not-logged-in-router-guard';
+import { CalendarModule } from 'primeng/components/calendar/calendar';
 
 @NgModule({
   declarations: [
@@ -47,6 +48,7 @@ import { NotLoggedInRouterGuard } from './login/not-logged-in-router-guard';
     MessagesModule,
     GrowlModule,
     DataTableModule,
+    CalendarModule,
 
     // project
     AppRoutingModule,
