@@ -1,10 +1,22 @@
 <a routerLink="create">Enter a new trip</a>
 <p-dataTable [value]="trips" [lazy]="true" [rows]="10" [paginator]="true"
-             (onLazyLoad)="loadTripsLazy($event)">
+             [totalRecords]="totalTripsCnt" (onLazyLoad)="loadTripsLazy($event)">
   <header>List of Trips</header>
-  <p-column field="startDate" header="Start"></p-column>
-  <p-column field="endDate" header="End"></p-column>
+  <p-column field="startDate" header="Start">
+    <template let-col let-trip="rowData" pTemplate="body">
+      {{trip[col.field] | amDateFormat:'LL'}}
+    </template>
+  </p-column>
+  <p-column field="endDate" header="End">
+    <template let-col let-trip="rowData" pTemplate="body">
+      {{trip[col.field] | amDateFormat:'LL'}}
+    </template>
+  </p-column>
   <p-column field="destination" header="Destination"></p-column>
-  <p-column field="daysToStart" header="Days to Start"></p-column>
-  <p-column field="comment" header="Comment"></p-column>
+  <p-column field="daysToStart" header="Days to Start">
+    <template let-col let-trip="rowData" pTemplate="body">
+      {{trip[col.field] > 0 ? trip[col.field] : ''}}
+    </template>
+  </p-column>
+  <p-column field="comment" header="Comment" class="comment-column"></p-column>
 </p-dataTable>
