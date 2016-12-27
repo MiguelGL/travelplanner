@@ -5,6 +5,9 @@
         Travel Planner
       </a>
     </div>
+    <ul class="nav navbar-nav">
+      <li><a routerLink="/my-trips/create">Enter a new trip</a></li>
+    </ul>
     <ul *ngIf="isLoggedIn" class="nav navbar-nav navbar-right" (click)="$event.preventDefault()">
       <li dropdown (onToggle)="toggled($event)">
         <a href (click)="logout()"><span class="glyphicon glyphicon-log-out"></span> Logout</a>

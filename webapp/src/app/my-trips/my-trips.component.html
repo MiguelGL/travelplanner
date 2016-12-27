@@ -1,4 +1,4 @@
-<a routerLink="create">Enter a new trip</a>
+<h1>My Trips</h1>
 <p-dataTable [value]="trips" [lazy]="true" [rows]="10" [paginator]="true"
              [totalRecords]="totalTripsCnt" (onLazyLoad)="loadTripsLazy($event)">
   <header>List of Trips</header>

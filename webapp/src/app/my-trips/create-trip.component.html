@@ -1,4 +1,5 @@
 <form [formGroup]="tripForm" (ngSubmit)="submit(tripForm.value, tripForm.valid, tripForm)">
+  <h1>Create a Trip</h1>
   <p-messages [value]="errorMessages"></p-messages>
   <div class="form-group">
     <label for="startDateInput">Start Date</label>
