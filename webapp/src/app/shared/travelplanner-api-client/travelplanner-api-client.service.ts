@@ -33,7 +33,7 @@ export class TravelplannerApiClientService {
             throw response;
         }
       })
-      .catch((err, observable) => {
+      .catch((err) => {
         if (err instanceof Response) {
           if (err.status === 401) {
             return Observable.of(false);
@@ -73,7 +73,7 @@ export class TravelplannerApiClientService {
     params.set('password', password);
 
     const headers = new Headers();
-    headers.append('Content-Type', 'application/x-www-form-urlencoded')
+    headers.append('Content-Type', 'application/x-www-form-urlencoded');
 
     return this.http.post('/travelplanner/api/login', params.toString(), {headers})
       .map(response => {
@@ -100,7 +100,7 @@ export class TravelplannerApiClientService {
   }
 
   loadCurrentUserTrips(offset: number, limit: number): Observable<Trip[]> {
-    const search = new URLSearchParams()
+    const search = new URLSearchParams();
     search.set("offset", `${offset}`);
     search.set("limit", `${limit}`);
 
@@ -118,7 +118,7 @@ export class TravelplannerApiClientService {
               endDate: moment(endDate),
               destination: apiTrip.destinationName,
               comment: apiTrip.comment || '',
-              daysToStart: moment.duration(now.getMilliseconds() - startDate.getMilliseconds())
+              daysToStart: moment.duration(now.getTime() - startDate.getTime())
             };
           });
         } else {
