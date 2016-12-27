@@ -51,3 +51,4 @@ A non-exclusive list of subjects is included next.
 - Angular router deactivation guards could be used to prevent user from navigating away from pages where values have been entered and could therefore be lost.
 - Angular's AOT (Ahead Of Time) compiling feature could be used to speedup application client-side bootstrapping by precompiling templates.
 - Because previously selected user destinations are stored server-side, autocompletion support could be added to the control used to enter a trip destination.
+- A custom HTTP client wrapper could be built so that the application warns and redirects to login automatically upon receiving an authorization (401) error if security token expires. Alternatively, a periodic token refresh could be implemented to prevent this from happening.
