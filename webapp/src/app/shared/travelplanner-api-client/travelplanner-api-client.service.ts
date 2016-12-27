@@ -209,4 +209,15 @@ export class TravelplannerApiClientService {
       });
   }
 
+  deleteTrip(id: number): Observable<void> {
+    return this.http.delete(`/travelplanner/api/sec/trips/${id}`)
+      .map(response => {
+        if (response.status === 200) {
+          return;
+        } else {
+          throw response;
+        }
+      });
+  }
+
 }

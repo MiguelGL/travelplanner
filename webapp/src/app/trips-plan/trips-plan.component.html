@@ -1,3 +1,4 @@
+<h1>Trips starting next month</h1>
 <p-dataTable [value]="trips" [lazy]="true" [rows]="10" [paginator]="true"
              [totalRecords]="totalTripsCnt" (onLazyLoad)="loadMonthTripsLazy($event)">
   <header>Your Trip Plan for {{year}}/{{month}}</header>
