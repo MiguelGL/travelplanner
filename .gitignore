@@ -3,4 +3,14 @@ deploy/postgresql-*.jar
 deploy/wildfly-*.zip
 nbproject
 nb-configuration.xml
-
+server/src/main/webapp/*.html
+server/src/main/webapp/*.css
+server/src/main/webapp/*.js
+server/src/main/webapp/*.ico
+server/src/main/webapp/*.map
+server/src/main/webapp/*.woff
+server/src/main/webapp/*.woff2
+server/src/main/webapp/*.gif
+server/src/main/webapp/*.svg
+server/src/main/webapp/*.eot
+server/src/main/webapp/*.ttf

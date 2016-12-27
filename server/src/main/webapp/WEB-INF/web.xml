@@ -16,6 +16,10 @@
         <tracking-mode>COOKIE</tracking-mode>
     </session-config>
 
+    <welcome-file-list>
+        <welcome-file>index.html</welcome-file>
+    </welcome-file-list>
+
     <context-param>
         <param-name>resteasy.scan</param-name>
         <param-value>true</param-value>
