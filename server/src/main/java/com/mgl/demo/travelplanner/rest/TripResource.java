@@ -20,7 +20,7 @@ import org.jboss.resteasy.annotations.cache.NoCache;
 @Path("/sec/trips/{tripId}")
 @Stateless
 @NoCache
-@RolesAllowed({Role.ADMINISTRATOR_NAME, Role.REGULAR_USER_NAME})
+@RolesAllowed({Role.ADMINISTRATOR_NAME, Role.REGULAR_USER_NAME, Role.MANAGER_NAME})
 public class TripResource {
 
     @Inject private TripDao tripDao;
