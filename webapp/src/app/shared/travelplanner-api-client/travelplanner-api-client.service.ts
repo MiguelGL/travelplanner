@@ -99,7 +99,7 @@ export class TravelplannerApiClientService {
       })
   }
 
-  loadCurrentUserTrips(offset: number, limit: number): Observable<Trip[]> {
+  loadCurrentUserTrips(offset: number, limit: number): Observable<{trips: Trip[], total: number}> {
     const search = new URLSearchParams();
     search.set("offset", `${offset}`);
     search.set("limit", `${limit}`);
@@ -108,9 +108,10 @@ export class TravelplannerApiClientService {
       .map(response => {
         if (response.status === 200) {
           const now = this.truncateDateToDay(new Date());
-          return response.json().map(apiTrip => {
-            return this.apiTripToTrip(now, apiTrip);
-          });
+          return {
+            trips: response.json().map(apiTrip => this.apiTripToTrip(now, apiTrip)),
+            total: parseInt(response.headers.get('X-Available-Records-Count'), 10)
+          };
         } else {
           throw response;
         }

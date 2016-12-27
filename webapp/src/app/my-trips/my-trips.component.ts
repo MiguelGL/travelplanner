@@ -20,7 +20,8 @@ export class MyTripsComponent {
     console.log('event', event);
     this.apiClient.loadCurrentUserTrips(event.first, event.rows)
       .subscribe(trips => {
-        this.trips = trips;
+        this.trips = trips.trips;
+        this.totalTripsCnt = trips.total;
       }, error => {
         this.messagesService.display({
           severity: 'error', summary: 'Error loading trips',
