@@ -42,6 +42,28 @@ public class UserTripsResourceIT extends BaseResourceIT {
     }
 
     @Test
+    public void testInvalidTripCreation() {
+        LocalDate startDate = LocalDate.now();
+        LocalDate endDate = startDate.plusDays(4);
+
+        given()
+                .filter(sessionFilter)
+                .accept(ContentType.JSON)
+                .contentType(ContentType.JSON)
+                .pathParam("userId", jsonUser.getLong("id"))
+                .body(ImmutableMap.of(
+                        "startDate", toEpochMillis(startDate),
+                        "endDate", toEpochMillis(endDate),
+                        // "destination", "wherever",
+                        "comment", "No comment"
+                ))
+        .when()
+                .post("/sec/users/{userId}/trips")
+        .then()
+                .statusCode(Status.BAD_REQUEST.getStatusCode());
+    }
+
+    @Test
     public void testAdministratorUserTripsAccess() {
         SessionFilter auxSessionFilter = BaseAdminResourceIT.adminLogin();
 
